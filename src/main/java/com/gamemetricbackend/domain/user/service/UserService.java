@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BroadcastService {
+public class UserService {
     @Autowired
     private final UserRepository userRepository;
 
