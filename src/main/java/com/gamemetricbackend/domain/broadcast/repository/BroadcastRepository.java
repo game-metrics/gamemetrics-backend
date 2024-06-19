@@ -4,6 +4,6 @@ import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BroadcastRepository extends JpaRepository<Broadcast,Long> {
+public interface BroadcastRepository extends JpaRepository<Broadcast,Long>,BroadcastRepositoryQuery {
     Optional<Broadcast> findById(Long id);
 }
