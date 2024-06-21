@@ -1,6 +1,7 @@
 package com.gamemetricbackend.domain.broadcast.entitiy;
 
 
+import com.gamemetricbackend.global.entity.TimeStamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "broadcast")
 @NoArgsConstructor
-public class Broadcast {
+public class Broadcast extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
