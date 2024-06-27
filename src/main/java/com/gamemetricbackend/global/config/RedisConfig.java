@@ -49,17 +49,6 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    @Bean(name = "redisBlackListTemplate")
-    public RedisTemplate<String, Object> redisBlackListTemplate(
-        RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-        template.afterPropertiesSet();
-        return template;
-    }
-
     @Bean(name = "cacheManager")
     @Primary
     public CacheManager cacheManager() {
@@ -97,24 +86,6 @@ public class RedisConfig {
             .serializeValuesWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(
                     genericJackson2JsonRedisSerializer)) // Value Serializer 변경
-            .disableCachingNullValues()
-            .entryTtl(Duration.ofMinutes(10L));
-
-        builder.cacheDefaults(configuration);
-
-        return builder.build();
-    }
-
-    @Bean(name = "best3CacheManager")
-    public CacheManager best3Cachemanager() {
-        RedisCacheManager.RedisCacheManagerBuilder builder =
-            RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(
-                redisConnectionFactory());
-
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
-            .serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                    new GenericJackson2JsonRedisSerializer())) // Value Serializer 변경
             .disableCachingNullValues()
             .entryTtl(Duration.ofMinutes(10L));
 
