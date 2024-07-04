@@ -1,8 +1,13 @@
 package com.gamemetricbackend.global.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gamemetricbackend.domain.user.dto.LoginRequestDto;
+import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
+import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import com.gamemetricbackend.global.util.JwtUtil;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,5 +43,26 @@ public class AuthhorizationFilter extends UsernamePasswordAuthenticationFilter {
             throw new RuntimeException(e.getMessage());
         }
     }
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        log.info("로그인 성공");
+        String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
+        UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
+        Long id = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getId();
 
+        String token = jwtUtil.createToken(id, role);
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        ObjectNode json = new ObjectMapper().createObjectNode();
+        String newResponse = new ObjectMapper().writeValueAsString(json);
+        response.setContentType("application/json");
+        response.setContentLength(newResponse.length());
+        response.getOutputStream().write(newResponse.getBytes());
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        log.info("로그인 실패");
+        response.setStatus(401);
+    }
 }
