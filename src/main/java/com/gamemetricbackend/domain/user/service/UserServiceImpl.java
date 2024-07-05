@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Value("${admin.token.key}")
     String adminToken;
 
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService{
         if(requestDto.getAdminToken().equals(adminToken)){
             requestDto.setAdmin(true);
         }
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         userRepository.save(new User(requestDto));
     }
 }
