@@ -1,3 +1,12 @@
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ## Overview
 <!-- Briefly describe the changes and the related issue. Explain what was modified and why. -->
 
