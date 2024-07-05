@@ -22,13 +22,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Log4j2(topic = "AuthenticationFilter")
-public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository,
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository,
         PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
