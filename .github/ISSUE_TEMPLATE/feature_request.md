@@ -1,20 +1,25 @@
----
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+## Overview
+<!-- Briefly describe the changes and the related issue. Explain what was modified and why. -->
 
----
+<!-- Resolves: #(Issue Number) -->
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## PR TYPE
+What kind of change does this PR introduce?
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+- [ ] New feature
+- [ ] Bug fix
+- [ ] UI design changes (CSS, etc.)
+- [ ] Non-code changes (typo fixes, tab size changes, variable name changes)
+- [ ] Code refactoring
+- [ ] Adding or modifying comments
+- [ ] Documentation update
+- [ ] Adding or refactoring tests
+- [ ] Build or package manager updates
+- [ ] Renaming files or folders
+- [ ] Deleting files or folders
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## PR Checklist
+Please ensure that your PR meets the following requirements:
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+- [ ] The commit message adheres to the commit message convention. Refer to the Commit message convention
+- [ ] I have tested the changes (for bug fixes/features).
