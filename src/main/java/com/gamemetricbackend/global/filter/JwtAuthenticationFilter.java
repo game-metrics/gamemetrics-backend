@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository,
@@ -62,8 +61,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         log.info("로그인 성공");
-        UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
-        Long id = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getId();
+        User user = (User) authResult.getPrincipal();
+        Long id = user.getId();
+        UserRoleEnum role = user.getRole();
 
         String token = jwtUtil.createToken(id, role);
 
@@ -79,5 +79,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         log.info("로그인 실패");
         response.setStatus(401);
+        response.setHeader("login failed","login failed");
     }
 }
