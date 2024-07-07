@@ -59,4 +59,8 @@ public class User extends TimeStamped {
         this.password = password;
         this.role = userRoleEnum;
     }
+    public boolean UpdatePassword(String password){
+        this.password = password;
+        return true;
+    }
 }
