@@ -43,6 +43,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 setAuthentication(info);
             } catch (Exception e) {
                 log.error(e.getMessage());
+                log.error("Token is not readable.");
                 return;
             }
         }
@@ -61,6 +62,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // 인증 객체 생성
     private Authentication createAuthentication(Claims info) {
+        log.info("creating Authentication");
         User user = new User(info.get("userId", Long.class), info.get("admin", UserRoleEnum.class));
         UserDetails userDetails = new UserDetailsImpl(user);
         return new CustomAuthentication(userDetails);

@@ -6,7 +6,6 @@ import com.gamemetricbackend.domain.user.dto.LoginRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
-import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import com.gamemetricbackend.global.security.CustomAuthenticationToken;
 import com.gamemetricbackend.global.util.JwtUtil;
 import jakarta.servlet.FilterChain;

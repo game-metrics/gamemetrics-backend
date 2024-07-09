@@ -47,9 +47,10 @@ public class UserServiceImpl implements UserService{
         UpdatePasswordRequestDto updatePasswordRequestDto
     )
         throws NoSuchUserException {
-        User user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
-        if(user.getPassword().equals(updatePasswordRequestDto.getCurrentPassword())){
-            return user.UpdatePassword(updatePasswordRequestDto.getNewPassword());
+        User user = userRepository.findPasswordById(userId).orElseThrow(NoSuchUserException::new);
+
+        if(passwordEncoder.matches(updatePasswordRequestDto.getCurrentPassword(),user.getPassword())){
+            return user.UpdatePassword(passwordEncoder.encode(updatePasswordRequestDto.getNewPassword()));
         }
         return false;
     }

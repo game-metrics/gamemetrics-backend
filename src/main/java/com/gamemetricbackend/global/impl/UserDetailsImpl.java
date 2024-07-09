@@ -13,18 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserDetailsImpl implements UserDetails {
 
     private User user;
-    private final Long userId;
-    private final UserRoleEnum userRole;
-
-    public UserDetailsImpl(Long userId, UserRoleEnum userRole) {
-        this.userId = userId;
-        this.userRole = userRole;
-    }
 
     public UserDetailsImpl(User user) {
         this.user = user;
-        this.userId = user.getId();
-        this.userRole = user.getRole();
+    }
+
+    public UserDetailsImpl(Long memberId, UserRoleEnum userRoleEnum) {
+        this.user = new User(memberId,userRoleEnum);
     }
 
     @Override

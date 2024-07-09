@@ -41,6 +41,6 @@ public class UserController {
     ) throws NoSuchUserException {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ResponseDto.success(userService.UpdatePassword(userDetails.getUserId(),updatePasswordRequestDto)));
+            .body(ResponseDto.success(userService.UpdatePassword(1L,updatePasswordRequestDto)));
     }
 }
