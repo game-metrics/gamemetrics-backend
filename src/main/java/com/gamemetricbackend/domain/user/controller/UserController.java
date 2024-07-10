@@ -14,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,8 +35,8 @@ public class UserController {
 
     @PatchMapping
     public ResponseEntity<ResponseDto<Boolean>> changePassword(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto
+        @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails
     ) throws NoSuchUserException {
 
         return ResponseEntity.status(HttpStatus.CREATED)

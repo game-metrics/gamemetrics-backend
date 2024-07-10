@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public UserDetailsImpl(User user) {
         this.user = user;
@@ -31,6 +31,13 @@ public class UserDetailsImpl implements UserDetails {
             authorities.add(simpleGrantedAuthority);
         }
         return authorities;
+    }
+
+    public Long getId() {
+        return user.getId();
+    }
+    public UserRoleEnum getRole() {
+        return user.getRole();
     }
 
     @Override

@@ -25,4 +25,15 @@ public class UserRepositoryQueryImpl implements UserRepositoryQuery{
             .where(predicate)
             .fetchOne());
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        BooleanExpression predicate = qUser.username.eq(username);
+
+        return Optional.ofNullable(querydslConfig.jpaQueryFactory()
+            .select(Projections.fields(User.class, qUser.id,qUser.password,qUser.role))
+            .from(qUser)
+            .where(predicate)
+            .fetchOne());
+    }
 }
