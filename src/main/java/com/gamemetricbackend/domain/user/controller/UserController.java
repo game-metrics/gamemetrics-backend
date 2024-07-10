@@ -32,7 +32,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success("account created"));
     }
-
     @PatchMapping
     public ResponseEntity<ResponseDto<Boolean>> changePassword(
         @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,
