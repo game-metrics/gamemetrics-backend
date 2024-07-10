@@ -31,6 +31,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String tokenValue = jwtUtil.getJwtFromHeader(req);
 
+        // removing bearer prefix
         if (StringUtils.hasText(tokenValue)) {
             if (jwtUtil.validateToken(tokenValue)){
                 log.error("Token validation error");
@@ -47,12 +48,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-
         filterChain.doFilter(req, res);
     }
 
     // 인증 처리
     public void setAuthentication(Claims info) {
+        log.info("setting Authentication");
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(info);
         context.setAuthentication(authentication);
@@ -63,7 +64,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     // 인증 객체 생성
     private Authentication createAuthentication(Claims info) {
         log.info("creating Authentication");
-        User user = new User(info.get("userId", Long.class), info.get("admin", UserRoleEnum.class));
+        User user;
+        // todo need to refactor, fix why the info.get("auth", ... can not convert to UserRoleEnum.class
+        if(info.get("auth",String.class).equals("ADMIN")){
+            user = new User(info.get("userId", Long.class), UserRoleEnum.ADMIN);
+            //user = new User(info.get("userId", Long.class), info.get("auth",UserRoleEnum.class));
+        }
+        else {
+            user = new User(info.get("userId", Long.class), UserRoleEnum.USER);
+        }
         UserDetails userDetails = new UserDetailsImpl(user);
         return new CustomAuthentication(userDetails);
     }

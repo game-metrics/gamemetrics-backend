@@ -5,4 +5,6 @@ import java.util.Optional;
 
 public interface UserRepositoryQuery {
     Optional<User> findPasswordById(Long id);
+
+    Optional<User> findByUsername(String username);
 }
