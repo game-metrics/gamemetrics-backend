@@ -27,7 +27,6 @@ public class UserController {
     public ResponseEntity<ResponseDto<String>> signup(
         @Valid @RequestBody SignupRequestDto requestDto
     ){
-
         userService.signup(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success("account created"));
