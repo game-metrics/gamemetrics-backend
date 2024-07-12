@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BroadcastRepository extends JpaRepository<Broadcast,Long>,BroadcastRepositoryQuery {
     Optional<Broadcast> findById(Long id);
+
+    Broadcast findByTitle(String title);
 }
