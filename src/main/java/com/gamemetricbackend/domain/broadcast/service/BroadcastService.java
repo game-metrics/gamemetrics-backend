@@ -5,4 +5,6 @@ import java.util.Optional;
 
 public interface BroadcastService {
     Optional<Broadcast> findById(Long id);
+
+    Broadcast findByTitle(String title);
 }

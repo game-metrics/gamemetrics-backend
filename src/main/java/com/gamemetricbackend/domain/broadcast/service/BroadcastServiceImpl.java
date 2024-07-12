@@ -16,4 +16,9 @@ public class BroadcastServiceImpl implements BroadcastService{
         return broadcastRepository.findById(id);
     }
 
+    @Override
+    public Broadcast findByTitle(String title) {
+        return broadcastRepository.findByTitle(title);
+    }
+
 }

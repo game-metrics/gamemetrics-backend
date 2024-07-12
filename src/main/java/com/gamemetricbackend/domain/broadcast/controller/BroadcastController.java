@@ -1,7 +1,9 @@
 package com.gamemetricbackend.domain.broadcast.controller;
 
+import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.service.BroadcastService;
 import com.gamemetricbackend.domain.broadcast.service.BroadcastServiceImpl;
+import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,8 @@ public class BroadcastController {
     private final BroadcastService broadcastService;
 
     @GetMapping
-    private ResponseEntity<?> findBroadcast(@RequestParam Long id){
-        return ResponseEntity.status(HttpStatus.CREATED).body(broadcastService.findById(id));
+    private ResponseEntity<ResponseDto<Broadcast>> findBroadcast(@RequestParam String title){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.findByTitle(title)));
     }
 
 }
