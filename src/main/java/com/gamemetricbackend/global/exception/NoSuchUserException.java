@@ -6,6 +6,9 @@ import lombok.extern.log4j.Log4j2;
 public class NoSuchUserException extends Exception{
 
     public NoSuchUserException() {
-        super("해당유저를 찾을수 없습니다.");
+        super("User is not found");
+    }
+    public NoSuchUserException(String message) {
+        super(message);
     }
 }
