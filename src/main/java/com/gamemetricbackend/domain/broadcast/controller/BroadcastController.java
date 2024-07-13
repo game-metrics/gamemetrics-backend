@@ -1,14 +1,25 @@
 package com.gamemetricbackend.domain.broadcast.controller;
 
+import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
+import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
+import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.service.BroadcastService;
 import com.gamemetricbackend.domain.broadcast.service.BroadcastServiceImpl;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
+import com.gamemetricbackend.global.exception.UserNotMatchException;
+import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,9 +30,30 @@ public class BroadcastController {
 
     private final BroadcastService broadcastService;
 
+    @PostMapping
+    public ResponseEntity<ResponseDto<Broadcast>> createBroadcast(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+            ,@RequestBody BroadcastCreationDto broadcastCreationDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.createBroadcast(userDetails.getId(),broadcastCreationDto)));
+    }
+
     @GetMapping
-    private ResponseEntity<ResponseDto<Broadcast>> findBroadcast(@RequestParam String title){
+    public ResponseEntity<ResponseDto<Broadcast>> findBroadcast(
+        @RequestParam String title) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.findByTitle(title)));
     }
 
+    @PutMapping
+    public ResponseEntity<ResponseDto<Broadcast>> updateBroadcast(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+        ,@RequestBody UpdateBroadcastDto updateBroadcastDto) throws UserNotMatchException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.updateBroadcast(userDetails.getId(),updateBroadcastDto)));
+    }
+
+    @PatchMapping
+    public ResponseEntity<ResponseDto<Broadcast>> OffAirBroadcast(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+        ,@RequestBody OffAirRequestDto offAirRequestDto) throws UserNotMatchException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.OffAirBroadcast(userDetails.getId(),offAirRequestDto)));
+    }
 }
