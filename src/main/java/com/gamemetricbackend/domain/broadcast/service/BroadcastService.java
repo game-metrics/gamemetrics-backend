@@ -6,11 +6,13 @@ import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BroadcastService {
     Optional<Broadcast> findById(Long id);
 
-    Broadcast findByTitle(String title);
+    Page<Broadcast> findByTitle(String title, Pageable pageable);
 
     Broadcast createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto);
 
