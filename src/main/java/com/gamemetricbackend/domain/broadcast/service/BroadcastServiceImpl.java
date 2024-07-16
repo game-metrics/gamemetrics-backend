@@ -10,6 +10,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +25,8 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public Broadcast findByTitle(String title) {
-        return broadcastRepository.findByTitle(title);
+    public Page<Broadcast> findByTitle(String title,Pageable pageable) {
+        return broadcastRepository.findByTitle(title, pageable);
     }
 
     @Override
