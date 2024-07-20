@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        setFilterProcessesUrl("/users/login");
+        setFilterProcessesUrl("/user/login");
     }
     @Override
     public Authentication attemptAuthentication(
