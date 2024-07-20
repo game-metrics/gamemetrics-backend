@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
-
     @Override
     public String CreateComment() {
         return ":";
     }
+
 }
