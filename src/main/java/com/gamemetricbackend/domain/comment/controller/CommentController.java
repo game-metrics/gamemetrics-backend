@@ -1,13 +1,9 @@
 package com.gamemetricbackend.domain.comment.controller;
 
-import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.comment.dto.CreateCommentDto;
 import com.gamemetricbackend.domain.comment.service.CommentService;
-import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
