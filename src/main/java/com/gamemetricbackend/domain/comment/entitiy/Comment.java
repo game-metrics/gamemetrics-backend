@@ -15,14 +15,11 @@ import java.time.LocalDateTime;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "comment")
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -42,5 +39,11 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
+    public Comment (Long userId,Long broadCastId,String comment){
+        this.userId = userId;
+        this.broadCastId = broadCastId;
+        this.comment = comment;
+
+    }
 }
 
