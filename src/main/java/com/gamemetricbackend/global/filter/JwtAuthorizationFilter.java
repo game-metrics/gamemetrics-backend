@@ -33,11 +33,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // removing bearer prefix
         if (StringUtils.hasText(tokenValue)) {
-            if (jwtUtil.validateToken(tokenValue)){
+            if (!jwtUtil.validateToken(tokenValue)){
                 log.error("Token validation error");
                 return;
             }
-            log.info(tokenValue);
             Claims info = jwtUtil.claimUserInfoFromToken(tokenValue);
             log.info(info);
             try {
