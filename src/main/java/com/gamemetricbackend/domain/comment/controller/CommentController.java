@@ -20,5 +20,4 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success(commentService.CreateComment()));
     }
-
 }
