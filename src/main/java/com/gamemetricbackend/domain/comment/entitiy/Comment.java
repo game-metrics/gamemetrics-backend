@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "comment")
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
@@ -39,5 +38,12 @@ public class Comment {
     @Column(updatable = false,nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
+
+    public Comment (Long userId,Long broadCastId,String comment){
+        this.userId = userId;
+        this.broadCastId = broadCastId;
+        this.comment = comment;
+
+    }
 }
 

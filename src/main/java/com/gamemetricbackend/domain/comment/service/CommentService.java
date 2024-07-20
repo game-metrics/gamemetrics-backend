@@ -2,5 +2,5 @@ package com.gamemetricbackend.domain.comment.service;
 
 public interface CommentService {
 
-    String CreateComment();
+    void CreateComment(Long id, Long broadcastId,String comment);
 }

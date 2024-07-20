@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class CommentResponseDto {
+public class CreateCommentDto {
     private String comment;
-    private Long userId;
     private Long broadCastId;
 }
