@@ -7,7 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @Entity
@@ -21,8 +22,7 @@ public class Dib {
     @Column(nullable = false)
     private Long followerId;
 
-    @Column(nullable = false)
-    @OneToOne(fetch = FetchType.EAGER)
-    private User streamer;
-
+    // todo : need to refactor , probably need to make middle table between Streamers and a foller Dib
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<User> streamer;
 }
