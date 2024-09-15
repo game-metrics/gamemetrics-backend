@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+    //todo : the whole logging and jwt system might be moved onto a AWS Cognito User pool and Identity pool
     private final UserService userService;
 
     @PostMapping
