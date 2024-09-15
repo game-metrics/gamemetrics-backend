@@ -14,7 +14,4 @@ import org.springframework.stereotype.Service;
 public class DibService {
     private  DibRepository dibRepository;
 
-    public Optional<Page<Dib>> getPageDibs(Long id) {
-        return dibRepository.getPage();
-    }
 }

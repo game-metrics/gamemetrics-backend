@@ -1,10 +1,13 @@
 package com.gamemetricbackend.domain.dib.entity;
 
+import com.gamemetricbackend.domain.user.entitiy.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.RequiredArgsConstructor;
 
 @Entity
@@ -19,5 +22,7 @@ public class Dib {
     private Long followerId;
 
     @Column(nullable = false)
-    private Long streamerId;
+    @OneToOne(fetch = FetchType.EAGER)
+    private User streamer;
+
 }

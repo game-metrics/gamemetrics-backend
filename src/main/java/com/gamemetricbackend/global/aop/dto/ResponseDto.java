@@ -33,7 +33,7 @@ public class ResponseDto<E> {
      * @param <T>  response data type
      * @return CommonResponseDto
      */
-    public static <T> ResponseDto<Page<Dib>> success(T data) {
+    public static <T> ResponseDto<T> success(T data) {
         return new ResponseDto<>(data);
     }
 
