@@ -13,5 +13,4 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DibService {
     private  DibRepository dibRepository;
-
 }

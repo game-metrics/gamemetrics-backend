@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DibRepository extends JpaRepository<Dib, Long> {
+public interface DibRepository extends JpaRepository<Dib, Long>,DibsRepositoryQuery {
+
 
 }
