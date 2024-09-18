@@ -20,7 +20,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "user", indexes = {@Index(name = "user_index",columnList = "id,nickname")})
+@Table(name = "user", indexes = {@Index(name = "user_index",columnList = "nickname")})
 public class User extends TimeStamped {
 
     @Id
@@ -33,7 +33,7 @@ public class User extends TimeStamped {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "nickname",nullable = false)
     private String nickname;
 
     @Column(nullable = false)
