@@ -22,7 +22,7 @@ public class Dib {
     @Column(nullable = false)
     private Long followerId;
 
-    // todo : need to refactor , probably need to make middle table between Streamers and a foller Dib
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<User> streamer;
+    // todo : need a better way to get streamer name, using less access to the DB and lesser query using dsl.
+    @Column(nullable = false)
+    private String streamerName;
 }
