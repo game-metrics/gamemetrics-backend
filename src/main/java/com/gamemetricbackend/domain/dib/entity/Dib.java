@@ -33,7 +33,7 @@ public class Dib {
     public Dib(Long userid, String streamerName) {
         this.followerId=userid;
         this.streamerName=streamerName;
-        this.status = false;
+        this.status = true;
     }
 
     public void updateStatus(){

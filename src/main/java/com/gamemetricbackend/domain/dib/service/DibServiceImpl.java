@@ -22,6 +22,8 @@ public class DibServiceImpl implements DibService{
 
     private Dib createNewDib(Long userid, String streamerName){
         Dib dib = new Dib(userid,streamerName);
+        dibRepository.save(dib);
+        dib.updateStatus();
         return dib;
     }
 }
