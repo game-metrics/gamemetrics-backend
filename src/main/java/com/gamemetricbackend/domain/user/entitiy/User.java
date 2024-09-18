@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.Builder.Default;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "user", indexes = {@Index(name = "user_index",columnList = "nickname")})
 public class User extends TimeStamped {
 
     @Id
@@ -32,6 +33,8 @@ public class User extends TimeStamped {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "nickname",nullable = false)
+    private String nickname;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -41,6 +44,8 @@ public class User extends TimeStamped {
         super();
         this.username = requestDto.getUsername();
         this.password = requestDto.getPassword();
+        this.nickname = requestDto.getNickname();
+
         if(requestDto.isAdmin()){
             this.role = UserRoleEnum.ADMIN;
         }
@@ -54,8 +59,9 @@ public class User extends TimeStamped {
         this.role = userRoleEnum;
     }
 
-    public User(String username, String password, UserRoleEnum userRoleEnum) {
+    public User(String username, String password,String nickname, UserRoleEnum userRoleEnum) {
         this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.role = userRoleEnum;
     }

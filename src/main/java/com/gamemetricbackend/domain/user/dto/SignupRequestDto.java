@@ -12,6 +12,9 @@ public class SignupRequestDto {
     @NotBlank(message = "password is compulsory")
     private String password;
 
+    @NotBlank(message = "password is compulsory")
+    private String nickname;
+
     private boolean admin = false;
     private String adminToken = "";
 }
