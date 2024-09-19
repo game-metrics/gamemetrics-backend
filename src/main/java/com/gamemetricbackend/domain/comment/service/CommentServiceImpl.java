@@ -13,6 +13,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void CreateComment(Long id, Long broadcastId,String comment) {
         commentRepository.save(new Comment(id,broadcastId,comment));
-        //todo : need a function that uploads comments on redis so it can be live
+        //todo : this is just temporal the chats will be live on a kafka then be stored into a dynamo DB
     }
 }
