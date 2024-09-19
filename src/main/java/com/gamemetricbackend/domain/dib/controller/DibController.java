@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/dib")
+@RequestMapping("/dibs")
 public class DibController {
     private DibService dibService;
 
