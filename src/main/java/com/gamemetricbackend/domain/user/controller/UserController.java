@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     //todo : the whole loging and jwt system might be moved onto a AWS Cognito User pool and Identity pool
     private final UserService userService;
@@ -32,6 +32,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success("account created"));
     }
+
     @PatchMapping
     public ResponseEntity<ResponseDto<Boolean>> changePassword(
         @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,
