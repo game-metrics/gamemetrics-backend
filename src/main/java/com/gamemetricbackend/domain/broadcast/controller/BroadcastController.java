@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/broadcast")
+@RequestMapping("/broadcasts")
 public class BroadcastController {
 
     private final BroadcastService broadcastService;
