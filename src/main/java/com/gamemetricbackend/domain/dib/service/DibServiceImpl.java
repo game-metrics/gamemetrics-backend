@@ -2,6 +2,7 @@ package com.gamemetricbackend.domain.dib.service;
 
 import com.gamemetricbackend.domain.dib.entity.Dib;
 import com.gamemetricbackend.domain.dib.repository.DibRepository;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class DibServiceImpl implements DibService{
     private final DibRepository dibRepository;
 
+    // todo need a better way then using try catch...
     @Override
     @Transactional
     public Boolean upateDib(Long userid, String streamerName) {
-        Dib dib = dibRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElse(createNewDib(userid,streamerName));
+        Dib dib;
+        try {
+            dib = dibRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElseThrow(NoSuchElementException::new);
+        }catch (NoSuchElementException exception){
+            dib = createNewDib(userid,streamerName);
+        }
         dib.updateStatus();
         return dib.getStatus();
     }
