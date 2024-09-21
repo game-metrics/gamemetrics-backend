@@ -9,7 +9,6 @@ import com.gamemetricbackend.global.exception.UserNotMatchException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,9 +47,8 @@ public class BroadcastServiceImpl implements BroadcastService{
     @Transactional
     public Broadcast OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
         throws UserNotMatchException,NoSuchElementException {
-            Broadcast broadcast = findById(offAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
-            broadcast.turnOffAir(userId);
-            return broadcast;
-
+        Broadcast broadcast = findById(offAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+        broadcast.turnOffAir(userId);
+        return broadcast;
     }
 }
