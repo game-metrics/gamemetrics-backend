@@ -18,8 +18,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -63,18 +63,30 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
             authorizeHttpRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .permitAll() // resources 접근 허용 설정
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                 .requestMatchers(HttpMethod.POST,"/users").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
+                .requestMatchers("/", "/index").permitAll() // '/' 및 '/index' 경로 접근 허용
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
         //필터 관리
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        String[] allowedOrigins = {"http://localhost:3000"};
+        registry.addMapping("/**") // 요청을 받을 엔드포인트를 지정합니다.
+            .allowedOriginPatterns(allowedOrigins) // 허용할 origin 을 설정합니다.
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH","OPTIONS") // 허용할 HTTP 메서드를 설정합니다.
+            .allowCredentials(true)
+            .allowedHeaders("Content-Type", "Authorization",
+                "Access-Control-Allow-Origin", "Access-Control-Expose-Headers") // 허용할 헤더를 설정합니다.
+            .exposedHeaders("Authorization");
     }
 
 }
