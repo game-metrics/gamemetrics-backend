@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class BroadCastResponseDto {
+    String id;
     String title;
     String thumbNailUrl;
 }
