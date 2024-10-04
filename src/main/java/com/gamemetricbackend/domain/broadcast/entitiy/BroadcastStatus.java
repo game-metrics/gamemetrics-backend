@@ -1,13 +1,10 @@
 package com.gamemetricbackend.domain.broadcast.entitiy;
 
-import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum.Authority;
-import lombok.Getter;
-
-public enum BroadcastStaus {
+public enum BroadcastStatus {
     ONAIR(Status.ONAIR),  // 사용자 권한
     OFFAIR(Status.OFFAIR);  // 관리자 권한
     private final String status;
-    BroadcastStaus(String status) {
+    BroadcastStatus(String status) {
         this.status = status;
     }
 

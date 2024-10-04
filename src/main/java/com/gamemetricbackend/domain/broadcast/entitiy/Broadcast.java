@@ -40,17 +40,17 @@ public class Broadcast extends TimeStamped {
 
     @Column
     @Enumerated(EnumType.STRING)
-    BroadcastStaus broadcastStaus;
+    BroadcastStatus broadcastStaus;
 
     // todo thumbnails will be saved on s3? or somewhere better.
-    @Column
-    String thumbNailUrl;
+    @Column(nullable = false)
+    private String thumbNailUrl;
 
     public Broadcast(Long userId,BroadcastCreationDto broadcastCreationDto) {
         this.title = broadcastCreationDto.getTitle();
-        this.thumbNailUrl = broadcastCreationDto.getThumbNail();
+        this.thumbNailUrl = broadcastCreationDto.getThumbNailUrl();
         this.userId = userId;
-        this.broadcastStaus = BroadcastStaus.ONAIR;
+        this.broadcastStaus = BroadcastStatus.ONAIR;
     }
 
     public void update(Long userId,UpdateBroadcastDto updateBroadcastDto)
@@ -67,7 +67,7 @@ public class Broadcast extends TimeStamped {
     public void turnOffAir(Long userId)
         throws UserNotMatchException {
         if(this.userId.equals(userId)){
-            this.broadcastStaus = BroadcastStaus.OFFAIR;
+            this.broadcastStaus = BroadcastStatus.OFFAIR;
         }
         else {
             throw new UserNotMatchException();
