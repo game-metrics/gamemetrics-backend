@@ -21,4 +21,6 @@ public interface BroadcastService {
 
     Broadcast OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
         throws UserNotMatchException;
+
+    Page<BroadcastCreationDto> getBroadcastList(Pageable pageable);
 }

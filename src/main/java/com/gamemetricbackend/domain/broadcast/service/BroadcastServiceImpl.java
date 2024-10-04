@@ -51,4 +51,9 @@ public class BroadcastServiceImpl implements BroadcastService{
         broadcast.turnOffAir(userId);
         return broadcast;
     }
+
+    @Override
+    public Page<BroadcastCreationDto> getBroadcastList(Pageable pageable) {
+        return broadcastRepository.getBroadcatePage(pageable);
+    }
 }

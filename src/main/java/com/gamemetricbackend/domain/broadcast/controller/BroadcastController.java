@@ -38,10 +38,15 @@ public class BroadcastController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.createBroadcast(userDetails.getId(),broadcastCreationDto)));
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseDto<Page<Broadcast>>> findBroadcast(
-        @RequestParam String title, @PageableDefault Pageable pageable) {
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto<Page<Broadcast>>> findBroadcastByTitle(
+        @RequestParam(name = "title") String title, @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.findByTitle(title, pageable)));
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseDto<Page<BroadcastCreationDto>>> getBroadcastPage(@PageableDefault Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.getBroadcastList(pageable)));
     }
 
     @PutMapping

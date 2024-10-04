@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.broadcast.repository;
 
+import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.entitiy.QBroadcast;
 import com.gamemetricbackend.domain.user.entitiy.User;
@@ -21,6 +22,7 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
 
     @Override
     public Page<Broadcast> findByTitle(String title, Pageable pageable) {
+
         BooleanExpression predicate = qBroadcast.title.containsIgnoreCase(title); // Use containsIgnoreCase for case-insensitive search
 
         List<Broadcast> broadcasts = querydslConfig.jpaQueryFactory()
@@ -38,5 +40,25 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
             .fetchOne();
 
         return new PageImpl<>(broadcasts, pageable, total);
+    }
+
+    @Override
+    public Page<BroadcastCreationDto> getBroadcatePage(Pageable pageable) {
+
+        List<BroadcastCreationDto> broadcasts = querydslConfig.jpaQueryFactory()
+            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.thumbNailUrl,qBroadcast.title))
+            .from(qBroadcast)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        Long total = querydslConfig.jpaQueryFactory()
+            .select(qBroadcast.count())
+            .from(qBroadcast)
+            .fetchOne();
+
+        long totalCount = total != null ? total : 0L;
+
+        return new PageImpl<>(broadcasts, pageable, totalCount);
     }
 }
