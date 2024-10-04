@@ -2,6 +2,7 @@ package com.gamemetricbackend.domain.broadcast.repository;
 
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
+import com.gamemetricbackend.domain.broadcast.entitiy.BroadcastStatus;
 import com.gamemetricbackend.domain.broadcast.entitiy.QBroadcast;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.global.config.QuerydslConfig;
@@ -23,10 +24,10 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
     @Override
     public Page<BroadcastCreationDto> findByTitle(String title, Pageable pageable) {
 
-        BooleanExpression predicate = qBroadcast.title.containsIgnoreCase(title); // Use containsIgnoreCase for case-insensitive search
+        BooleanExpression predicate = qBroadcast.title.containsIgnoreCase(title).and(qBroadcast.broadcastStatus.eq(BroadcastStatus.ONAIR)); // Use containsIgnoreCase for case-insensitive search
 
         List<BroadcastCreationDto> broadcasts = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.id,qBroadcast.thumbNailUrl, qBroadcast.title, qBroadcast.broadcastStaus))
+            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.id,qBroadcast.thumbNailUrl, qBroadcast.title))
             .from(qBroadcast)
             .where(predicate)
             .offset(pageable.getOffset())
