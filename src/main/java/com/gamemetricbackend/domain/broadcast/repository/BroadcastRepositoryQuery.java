@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BroadcastRepositoryQuery {
-    Page<Broadcast> findByTitle(String title, Pageable pageable);
+    Page<BroadcastCreationDto> findByTitle(String title, Pageable pageable);
 
     Page<BroadcastCreationDto> getBroadcatePage(Pageable pageable);
 }

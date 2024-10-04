@@ -21,12 +21,12 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
     QBroadcast qBroadcast = QBroadcast.broadcast;
 
     @Override
-    public Page<Broadcast> findByTitle(String title, Pageable pageable) {
+    public Page<BroadcastCreationDto> findByTitle(String title, Pageable pageable) {
 
         BooleanExpression predicate = qBroadcast.title.containsIgnoreCase(title); // Use containsIgnoreCase for case-insensitive search
 
-        List<Broadcast> broadcasts = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(Broadcast.class, qBroadcast.id, qBroadcast.title, qBroadcast.broadcastStaus))
+        List<BroadcastCreationDto> broadcasts = querydslConfig.jpaQueryFactory()
+            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.id,qBroadcast.thumbNailUrl, qBroadcast.title, qBroadcast.broadcastStaus))
             .from(qBroadcast)
             .where(predicate)
             .offset(pageable.getOffset())

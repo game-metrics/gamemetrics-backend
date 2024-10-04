@@ -39,7 +39,7 @@ public class BroadcastController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ResponseDto<Page<Broadcast>>> findBroadcastByTitle(
+    public ResponseEntity<ResponseDto<Page<BroadcastCreationDto>>> findBroadcastByTitle(
         @RequestParam(name = "title") String title, @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.findByTitle(title, pageable)));
     }
