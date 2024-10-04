@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class BroadcastCreationDto {
     String title;
-    String thumbNail;
+    String thumbNailUrl;
 }
