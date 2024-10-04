@@ -33,13 +33,13 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
             .limit(pageable.getPageSize())
             .fetch();
 
-        long total = querydslConfig.jpaQueryFactory()
+        Long total = querydslConfig.jpaQueryFactory()
             .select(qBroadcast.count())
             .from(qBroadcast)
             .where(predicate)
             .fetchOne();
-
-        return new PageImpl<>(broadcasts, pageable, total);
+        long totalCount = total != null ? total : 0L;
+        return new PageImpl<>(broadcasts, pageable, totalCount);
     }
 
     @Override
