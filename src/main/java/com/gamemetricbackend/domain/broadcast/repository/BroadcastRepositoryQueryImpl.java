@@ -46,7 +46,7 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
     public Page<BroadcastCreationDto> getBroadcatePage(Pageable pageable) {
 
         List<BroadcastCreationDto> broadcasts = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.thumbNailUrl,qBroadcast.title))
+            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.id,qBroadcast.thumbNailUrl,qBroadcast.title))
             .from(qBroadcast)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
