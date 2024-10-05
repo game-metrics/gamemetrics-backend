@@ -24,7 +24,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public Page<Broadcast> findByTitle(String title,Pageable pageable) {
+    public Page<BroadcastCreationDto> findByTitle(String title,Pageable pageable) {
         return broadcastRepository.findByTitle(title, pageable);
     }
 

@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 public interface BroadcastService {
     Optional<Broadcast> findById(Long id);
 
-    Page<Broadcast> findByTitle(String title, Pageable pageable);
+    Page<BroadcastCreationDto> findByTitle(String title, Pageable pageable);
 
     Broadcast createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto);
 
