@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class CreateCommentDto {
+public class ChatRequestDto {
     private String comment;
     private Long broadCastId;
 }
