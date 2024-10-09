@@ -67,6 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers(HttpMethod.POST,"/users").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
                 .requestMatchers(HttpMethod.GET,"/broadcasts").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
