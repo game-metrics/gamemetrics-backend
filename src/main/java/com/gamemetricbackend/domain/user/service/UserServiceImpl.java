@@ -1,10 +1,15 @@
 package com.gamemetricbackend.domain.user.service;
 
+import com.gamemetricbackend.domain.user.dto.temporal.Authority;
+import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
 import com.gamemetricbackend.global.exception.NoSuchUserException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,14 +35,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void signup(
-        SignupRequestDto requestDto
-    ) {
+    public SignUpResponseDto signUp(
+        SignupRequestDto requestDto) {
         if(requestDto.getAdminToken().equals(adminToken)){
             requestDto.setAdmin(true);
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        userRepository.save(new User(requestDto));
+
+        // todo : remove all below after the assignment check.
+        User user = userRepository.save(new User(requestDto));
+
+        Authority authorityName = new Authority(user.getRole());
+
+        List<Authority> Authority = new ArrayList<>();
+        Authority.add(authorityName);
+
+        return new SignUpResponseDto(user.getUsername(),user.getUsername(),Authority);
     }
 
     @Override

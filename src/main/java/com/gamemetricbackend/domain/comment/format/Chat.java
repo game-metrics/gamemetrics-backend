@@ -1,4 +1,4 @@
-package com.gamemetricbackend.domain.comment.entitiy;
+package com.gamemetricbackend.domain.comment.format;
 
 
 import com.gamemetricbackend.global.entity.TimeStamped;
@@ -16,34 +16,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
-@Table(name = "comment")
-@EntityListeners(AuditingEntityListener.class)
-public class Comment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+@NoArgsConstructor
+public class Chat {
     private Long id;
-
-    @Column(nullable = false)
-    private String comment;
-
-    @Column(nullable = false)
+    private String message;
     private Long userId;
-
-    @Column(nullable = false)
     private Long broadCastId;
-
-    @CreatedDate
-    @Column(updatable = false,nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
-
-    public Comment (Long userId,Long broadCastId,String comment){
-        this.userId = userId;
-        this.broadCastId = broadCastId;
-        this.comment = comment;
-
-    }
 }
 

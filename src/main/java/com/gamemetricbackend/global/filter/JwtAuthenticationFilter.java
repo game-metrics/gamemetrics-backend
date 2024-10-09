@@ -1,15 +1,19 @@
 package com.gamemetricbackend.global.filter;
 
+import static com.gamemetricbackend.global.util.JwtUtil.AUTHORIZATION_HEADER;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gamemetricbackend.domain.user.dto.LoginRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
+import com.gamemetricbackend.global.dto.LoginResponseDto;
 import com.gamemetricbackend.global.security.CustomAuthenticationToken;
 import com.gamemetricbackend.global.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -65,13 +69,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserRoleEnum role = user.getRole();
 
         String token = jwtUtil.createToken(id, role);
+        response.addHeader(AUTHORIZATION_HEADER, token);
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
-        ObjectNode json = new ObjectMapper().createObjectNode();
-        String newResponse = new ObjectMapper().writeValueAsString(json);
+        LoginResponseDto loginRequestDto = new LoginResponseDto(token);
+
+        String newResponse = new ObjectMapper().writeValueAsString(loginRequestDto);
         response.setContentType("application/json");
         response.setContentLength(newResponse.length());
-        response.getOutputStream().write(newResponse.getBytes());
+        response.getWriter().write(newResponse);
     }
 
     @Override

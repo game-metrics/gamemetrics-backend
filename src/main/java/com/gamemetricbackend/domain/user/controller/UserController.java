@@ -1,11 +1,14 @@
 package com.gamemetricbackend.domain.user.controller;
 
+import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
 import com.gamemetricbackend.domain.user.service.UserService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.exception.NoSuchUserException;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,19 +23,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@Tag(name = "User Controller Swagger", description = "Response Estimate API")
 public class UserController {
     //todo : the whole login and jwt system might be moved onto a AWS Cognito User pool and Identity pool
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<String>> signup(
+    @Operation(summary = "계정생성", description = "계정를 생성한다.")
+    public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(
         @Valid @RequestBody SignupRequestDto requestDto
     ){
-        userService.signup(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ResponseDto.success("account created"));
+            .body(ResponseDto.success(userService.signUp(requestDto)));
     }
 
+    @Operation(summary = "비번변경", description = "비번를 변경한다.")
     @PatchMapping
     public ResponseEntity<ResponseDto<Boolean>> changePassword(
         @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,

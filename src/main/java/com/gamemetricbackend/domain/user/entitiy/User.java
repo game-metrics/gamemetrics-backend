@@ -27,7 +27,7 @@ public class User extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -45,12 +45,10 @@ public class User extends TimeStamped {
         this.username = requestDto.getUsername();
         this.password = requestDto.getPassword();
         this.nickname = requestDto.getNickname();
+        this.role = UserRoleEnum.USER;
 
         if(requestDto.isAdmin()){
             this.role = UserRoleEnum.ADMIN;
-        }
-        else {
-            this.role = UserRoleEnum.USER;
         }
     }
 
