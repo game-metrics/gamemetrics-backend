@@ -8,6 +8,8 @@ import com.gamemetricbackend.domain.broadcast.service.BroadcastService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,12 +40,14 @@ public class BroadcastController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.createBroadcast(userDetails.getId(),broadcastCreationDto)));
     }
 
+    @Operation(summary = "방송 검색", description = "방송를 검색한다.")
     @GetMapping("/search")
     public ResponseEntity<ResponseDto<Page<BroadcastCreationDto>>> findBroadcastByTitle(
         @RequestParam(name = "title") String title, @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.findByTitle(title, pageable)));
     }
 
+    @Operation(summary = "방송 리스트(페이지) 불러오기", description = "방송를 리스트(페이지) 를 불러온다.")
     @GetMapping
     public ResponseEntity<ResponseDto<Page<BroadcastCreationDto>>> getBroadcastPage(@PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.getBroadcastList(pageable)));
