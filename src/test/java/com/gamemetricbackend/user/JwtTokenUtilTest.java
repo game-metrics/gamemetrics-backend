@@ -1,55 +1,89 @@
 package com.gamemetricbackend.user;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.esotericsoftware.minlog.Log;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
-import com.gamemetricbackend.global.entity.RefreshToken;
 import com.gamemetricbackend.global.util.JwtUtil;
 import com.gamemetricbackend.global.util.RedisUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 
+
+@SpringBootTest
 public class JwtTokenUtilTest {
 
-    @Mock
-    private static JwtUtil jwtUtil;
-
-    @Mock
+    private JwtUtil jwtUtil;
     private RedisUtil redisUtil;
-    private RefreshToken refreshToken;
+    private String secretKey;
+
+    HttpServletResponse response;
+
     Long userId;
     UserRoleEnum roleEnum;
 
     @BeforeEach
     void setUp(){
+        // given
+        secretKey = "7Iqk7YyM66W07YOA7L2U65Sp7YG065+9U3ByaW5n6rCV7J2Y7Yqc7YSw7LWc7JuQ67mI7J6F64uI64ukLg==";
+
         jwtUtil = new JwtUtil(redisUtil);
-        MockitoAnnotations.openMocks(this);
-        refreshToken = new RefreshToken();
-        userId = 1L;
-        roleEnum = UserRoleEnum.USER;
+        jwtUtil.TestEnviroment(secretKey);
     }
 
     @Test
-    void Login() throws JsonProcessingException {
+    void createAccessToken(){
+        //given
+        userId = 1L;
+        roleEnum = UserRoleEnum.USER;
+
+
+        //when
+        String accessToken = jwtUtil.createAccessToken(userId,roleEnum).substring(7); //remove bearer prefix
+        boolean validateion = jwtUtil.validateToken(accessToken,response); // expiration validation
+        long id = jwtUtil.getUserIdFromToken(accessToken);
+
+        //then
+        Log.info(accessToken);
+        assertTrue(validateion);
+        assertEquals(id,userId);
+    }
+
+    @Test
+    void createRefreshToken() {
+        //given
+        userId = 1L;
+        roleEnum = UserRoleEnum.USER;
         Date date = new Date();
-        String token =  "bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc1Miwicm9sZSI6IlVTRVIiLCJleHAiOjE3Mjg1NTYxMTF9.SBXn5xYX39XLjIrW3fudeMvLnn93xN1ntqa7MtMEZsI";
 
-        doNothing().when(redisUtil).set(any(), any(), anyInt());
-        when(jwtUtil.createAccessToken(any(),any())).thenReturn(token);
+        //when
+        String refreshToken = jwtUtil.createRefreshToken(date,userId,roleEnum).substring(7); //remove bearer prefix
+        boolean validateion = jwtUtil.validateToken(refreshToken,response); // expiration validation
+        long id = jwtUtil.getUserIdFromToken(refreshToken);
 
-        jwtUtil.createToken(userId,roleEnum);
+        //then
+        Log.info(refreshToken);
+        assertEquals(id,userId);
+        assertTrue(validateion);
+    }
 
-        System.out.println(refreshToken.getPreviousAccessToken());
+    @Test
+    void validateExpiredTokens() {
+        //given
+        String expiredToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VySWQiLCJ1c2VySWQiOjEsImF1dGgiOiJVU0VSIiwiZXhwIjoxNzI4MDQwNDA1LCJpYXQiOjE3Mjc5NTQwMDV9.OS5G85Py5Fp1gaKSZw0OJJW7SVdnnSmjpz-m_nyMnMc";
+
+        //when
+        boolean validation = jwtUtil.validateToken(expiredToken,response);
+
+        //then
+        assertFalse(validation); // expired means false
     }
 }
