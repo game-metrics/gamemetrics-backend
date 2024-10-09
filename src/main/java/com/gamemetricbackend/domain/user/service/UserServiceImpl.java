@@ -30,14 +30,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void signup(
-        SignupRequestDto requestDto
-    ) {
+    public User signUp(
+        SignupRequestDto requestDto) {
         if(requestDto.getAdminToken().equals(adminToken)){
             requestDto.setAdmin(true);
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        userRepository.save(new User(requestDto));
+        User user = userRepository.save(new User(requestDto));
+
+        return user;
     }
 
     @Override

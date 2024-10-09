@@ -1,11 +1,14 @@
 package com.gamemetricbackend.domain.user.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
+import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.service.UserService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.exception.NoSuchUserException;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,12 +28,11 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<String>> signup(
+    public ResponseEntity<ResponseDto<User>> signUp(
         @Valid @RequestBody SignupRequestDto requestDto
     ){
-        userService.signup(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ResponseDto.success("account created"));
+            .body(ResponseDto.success(userService.signUp(requestDto)));
     }
 
     @PatchMapping
