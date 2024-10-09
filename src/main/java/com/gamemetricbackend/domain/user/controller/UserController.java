@@ -1,15 +1,12 @@
 package com.gamemetricbackend.domain.user.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.gamemetricbackend.domain.user.dto.SignUpResponseDto;
+import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
-import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.service.UserService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.exception.NoSuchUserException;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
