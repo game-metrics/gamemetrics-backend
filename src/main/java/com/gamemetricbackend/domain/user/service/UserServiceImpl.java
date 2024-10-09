@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.user.service;
 
+import com.gamemetricbackend.domain.user.dto.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
@@ -30,15 +31,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User signUp(
+    public SignUpResponseDto signUp(
         SignupRequestDto requestDto) {
         if(requestDto.getAdminToken().equals(adminToken)){
             requestDto.setAdmin(true);
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         User user = userRepository.save(new User(requestDto));
+        SignUpResponseDto signUpResponseDto = new SignUpResponseDto(user.getUsername(),user.getNickname(),user.getRole());
 
-        return user;
+        return signUpResponseDto;
     }
 
     @Override

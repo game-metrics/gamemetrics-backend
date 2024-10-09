@@ -1,6 +1,7 @@
 package com.gamemetricbackend.domain.user.controller;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.gamemetricbackend.domain.user.dto.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
@@ -28,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<User>> signUp(
+    public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(
         @Valid @RequestBody SignupRequestDto requestDto
     ){
         return ResponseEntity.status(HttpStatus.CREATED)
