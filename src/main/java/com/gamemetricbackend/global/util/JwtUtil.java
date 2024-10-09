@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.global.entity.RefreshToken;
-import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +23,6 @@ import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -70,9 +68,9 @@ public class JwtUtil {
 
         RefreshToken refreshToken = redisUtil.get(redisKeys);
 
-            String accessToken = createAccessToken(userId, roleEnum);
-            log.info("새로운 access 토큰 발급");
-            refreshToken.update(accessToken);
+        String accessToken = createAccessToken(userId, roleEnum);
+        log.info("새로운 access 토큰 발급");
+        refreshToken.update(accessToken);
 
         redisUtil.set(redisKeys, refreshToken, (int) REFRESH_TOKEN_TIME);
 
@@ -141,8 +139,7 @@ public class JwtUtil {
         }
     }
 
-    public boolean validateToken(String token,HttpServletResponse res)
-        throws JsonProcessingException {
+    public boolean validateToken(String token,HttpServletResponse res) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
