@@ -38,9 +38,8 @@ public class UserServiceImpl implements UserService{
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         User user = userRepository.save(new User(requestDto));
-        SignUpResponseDto signUpResponseDto = new SignUpResponseDto(user.getUsername(),user.getNickname(),user.getRole());
 
-        return signUpResponseDto;
+        return new SignUpResponseDto(user.getUsername(),user.getNickname(),user.getRole());
     }
 
     @Override
