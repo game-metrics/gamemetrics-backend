@@ -2,7 +2,6 @@ package com.gamemetricbackend.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.esotericsoftware.minlog.Log;
@@ -11,9 +10,8 @@ import com.gamemetricbackend.global.util.JwtUtil;
 import com.gamemetricbackend.global.util.RedisUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -40,6 +38,7 @@ public class JwtTokenUtilTest {
     }
 
     @Test
+    @DisplayName("Access 토큰 생성 및 정보 가져오기 기능 테스트")
     void createAccessToken(){
         //given
         userId = 1L;
@@ -47,9 +46,9 @@ public class JwtTokenUtilTest {
 
 
         //when
-        String accessToken = jwtUtil.createAccessToken(userId,roleEnum).substring(7); //remove bearer prefix
-        boolean validateion = jwtUtil.validateToken(accessToken,response); // expiration validation
-        long id = jwtUtil.getUserIdFromToken(accessToken);
+        String accessToken = jwtUtil.createAccessToken(userId,roleEnum).substring(7); // bearer prefix 제거
+        boolean validateion = jwtUtil.validateToken(accessToken,response); // 만료기한 validation
+        long id = jwtUtil.getUserIdFromToken(accessToken); // 정보 가져오기
 
         //then
         Log.info(accessToken);
@@ -58,6 +57,7 @@ public class JwtTokenUtilTest {
     }
 
     @Test
+    @DisplayName("Refresh 토큰 생성 및 정보 가져오기 기능 테스트")
     void createRefreshToken() {
         //given
         userId = 1L;
@@ -65,9 +65,9 @@ public class JwtTokenUtilTest {
         Date date = new Date();
 
         //when
-        String refreshToken = jwtUtil.createRefreshToken(date,userId,roleEnum).substring(7); //remove bearer prefix
-        boolean validateion = jwtUtil.validateToken(refreshToken,response); // expiration validation
-        long id = jwtUtil.getUserIdFromToken(refreshToken);
+        String refreshToken = jwtUtil.createRefreshToken(date,userId,roleEnum).substring(7); // bearer prefix 제거
+        boolean validateion = jwtUtil.validateToken(refreshToken,response); // 만료기한 validation
+        long id = jwtUtil.getUserIdFromToken(refreshToken); // 정보 가져오기
 
         //then
         Log.info(refreshToken);
@@ -76,6 +76,7 @@ public class JwtTokenUtilTest {
     }
 
     @Test
+    @DisplayName("만료된 JWT 검증 및 처리 테스트")
     void validateExpiredTokens() {
         //given
         String expiredToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VySWQiLCJ1c2VySWQiOjEsImF1dGgiOiJVU0VSIiwiZXhwIjoxNzI4MDQwNDA1LCJpYXQiOjE3Mjc5NTQwMDV9.OS5G85Py5Fp1gaKSZw0OJJW7SVdnnSmjpz-m_nyMnMc";
