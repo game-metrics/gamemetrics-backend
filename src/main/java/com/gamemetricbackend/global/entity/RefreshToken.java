@@ -15,13 +15,8 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 public class RefreshToken implements Serializable {
 
-    @Column
     private String refreshToken;
-
-    @Column
     private String previousAccessToken;
-
-    @Column
     private Long userId;
 
     public void update(String accessToken) {
