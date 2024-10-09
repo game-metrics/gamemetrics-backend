@@ -7,5 +7,5 @@ import lombok.AllArgsConstructor;
 public class SignUpResponseDto {
     String username;
     String nickname;
-    UserRoleEnum userRoleEnum;
+    UserRoleEnum userRole;
 }
