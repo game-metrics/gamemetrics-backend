@@ -12,11 +12,13 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -42,7 +44,7 @@ public class JwtUtil {
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
     private String secretKey;
     private Key key;
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+    private SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     @PostConstruct
     public void init() {
@@ -63,7 +65,7 @@ public class JwtUtil {
         }
     }
 
-    private String UpdateAccessTokens(Long userId,UserRoleEnum roleEnum, String redisKeys)
+    public String UpdateAccessTokens(Long userId,UserRoleEnum roleEnum, String redisKeys)
         throws JsonProcessingException {
 
         RefreshToken refreshToken = redisUtil.get(redisKeys);
@@ -77,19 +79,12 @@ public class JwtUtil {
         return accessToken;
     }
 
-    private String SaveNewRefreshToken(Date date, Long userId, UserRoleEnum roleEnum,
+    public String SaveNewRefreshToken(Date date, Long userId, UserRoleEnum roleEnum,
         String redisKeys) throws JsonProcessingException {
 
         String accessToken = createAccessToken(userId, roleEnum);
 
-        String refreshToken = BEARER_PREFIX +
-            Jwts.builder()
-                .claim("userId", userId)
-                .claim("role", roleEnum)
-                .setIssuedAt(new Date(date.getTime())) // 토큰 발행 시간 정보
-                .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME)) // set Expire Time
-                .signWith(key, signatureAlgorithm)  // 사용할 암호화 알고리즘과
-                .compact();// signature 에 들어갈 secret 값 세팅
+        String refreshToken = createRefreshToken(date,userId,roleEnum);
 
         RefreshToken token = RefreshToken
             .builder()
@@ -101,6 +96,17 @@ public class JwtUtil {
         redisUtil.set(redisKeys, token, (int) REFRESH_TOKEN_TIME);
 
         return accessToken;
+    }
+
+    public String createRefreshToken(Date date, Long userId, UserRoleEnum roleEnum) {
+        return BEARER_PREFIX +
+            Jwts.builder()
+                .claim("userId", userId)
+                .claim("role", roleEnum)
+                .setIssuedAt(new Date(date.getTime())) // 토큰 발행 시간 정보
+                .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME)) // set Expire Time
+                .signWith(key, signatureAlgorithm)  // 사용할 암호화 알고리즘과
+                .compact();// signature 에 들어갈 secret 값 세팅
     }
 
     public String createAccessToken(Long userId, UserRoleEnum roleEnum) {
@@ -159,10 +165,9 @@ public class JwtUtil {
     public boolean validateRefreshToken(String token, HttpServletResponse response){
         log.info("Refresh 토큰 검증 후 새로운 access 토큰 발급 시도");
         try{
-
             Claims info = getMemberInfoFromExpiredToken(token);
             Long userId = ((Number) info.get(USER_ID)).longValue();
-            //todo : 임시
+
             UserRoleEnum role = UserRoleEnum.USER;
             String redisKeys = "UserID : " + userId;
 
@@ -190,7 +195,22 @@ public class JwtUtil {
             log.error("Redis 오브젝트 변환 에러");
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (NullPointerException e){
+            log.error("Redis 연결오류 혹은 해당값이 없습니다");
         }
         return false;
+    }
+
+    public boolean TestEnviroment(String secretKey) {
+        byte[] bytes = Base64.getDecoder().decode(secretKey);
+        this.secretKey = secretKey;
+        this.signatureAlgorithm = SignatureAlgorithm.HS256;
+        this.key = Keys.hmacShaKeyFor(bytes);
+        return true;
+    }
+
+    public Long getUserIdFromToken(String token) {
+        Claims info = getMemberInfoFromExpiredToken(token);
+        return ((Number) info.get("userId")).longValue();
     }
 }
