@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
-      - development
+      - main
 
 jobs:
   deploy:
@@ -40,5 +40,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script_stop: true
-          script:
+          script: |
+            kill -9 $(ps -ef | grep java | head -n 1 | awk '{print $2}')
             nohup java -jar *.jar 1> /dev/null 2>&1 &
