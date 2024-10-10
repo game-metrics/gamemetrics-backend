@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     branches:
-      - main
+      - development
 
 jobs:
   deploy:
