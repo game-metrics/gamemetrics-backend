@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.user.controller;
 
+import com.gamemetricbackend.domain.user.dto.LoginRequestDto;
 import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
 import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
@@ -46,5 +47,12 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success(userService.UpdatePassword(userDetails.getUser().getId(), updatePasswordRequestDto)));
+    }
+
+    @Operation(summary = "User login", description = "Authenticates the user and returns a JWT token")
+    @PostMapping("/login")
+    // AuththenticationFilter 에 이미 setFilterProcessesUrl("/users/login"); 해놨습니다.
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
+        return ResponseEntity.ok().build();
     }
 }
