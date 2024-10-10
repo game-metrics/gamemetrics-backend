@@ -1,7 +1,6 @@
 package com.gamemetricbackend.global.security;
 
 import com.gamemetricbackend.domain.user.entitiy.User;
-import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
