@@ -1,9 +1,7 @@
 package com.gamemetricbackend.global.aop.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.gamemetricbackend.domain.dib.entity.Dib;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)

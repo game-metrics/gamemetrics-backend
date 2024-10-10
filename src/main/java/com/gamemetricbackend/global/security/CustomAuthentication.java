@@ -1,7 +1,6 @@
 package com.gamemetricbackend.global.security;
 
 import java.util.Collection;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

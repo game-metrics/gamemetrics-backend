@@ -3,7 +3,6 @@ package com.gamemetricbackend.global.filter;
 import static com.gamemetricbackend.global.util.JwtUtil.AUTHORIZATION_HEADER;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gamemetricbackend.domain.user.dto.LoginRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
@@ -13,7 +12,6 @@ import com.gamemetricbackend.global.security.CustomAuthenticationToken;
 import com.gamemetricbackend.global.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;

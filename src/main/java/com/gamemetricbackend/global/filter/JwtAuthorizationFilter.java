@@ -4,10 +4,8 @@ import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import com.gamemetricbackend.global.security.CustomAuthentication;
-import com.gamemetricbackend.global.security.UserDetailsServiceImpl;
 import com.gamemetricbackend.global.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,10 +31,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String tokenValue = jwtUtil.getJwtFromHeader(req);
 
         if (StringUtils.hasText(tokenValue)) {
-                if (!jwtUtil.validateToken(tokenValue,res)){
-                    log.error("Token validation error");
-                    return;
-                }
+            if (!jwtUtil.validateToken(tokenValue,res)){
+                log.error("Token validation error");
+                return;
+            }
 
             Claims info = jwtUtil.claimUserInfoFromToken(tokenValue);
             log.info(info);
