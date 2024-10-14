@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,13 +29,16 @@ public class User extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Size(max = 20)
     @Column(nullable = false,unique = true)
     private String username;
 
+    @Size(max = 50)
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "nickname",nullable = false)
+    @Size(max = 20)
+    @Column(name = "nickname",nullable = false ,unique = true)
     private String nickname;
 
     @Column(nullable = false)
