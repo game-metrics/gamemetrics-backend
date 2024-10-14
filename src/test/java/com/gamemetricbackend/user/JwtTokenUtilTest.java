@@ -42,7 +42,6 @@ public class JwtTokenUtilTest {
         userId = 1L;
         roleEnum = UserRoleEnum.USER;
 
-
         //when
         String accessToken = jwtUtil.createAccessToken(userId,roleEnum).substring(7); // bearer prefix 제거
         boolean validateion = jwtUtil.validateToken(accessToken,response); // 만료기한 validation
