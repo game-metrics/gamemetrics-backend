@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,15 +29,15 @@ public class User extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Max(20)
+    @Size(max = 20)
     @Column(nullable = false,unique = true)
     private String username;
 
-    @Max(50)
+    @Size(max = 50)
     @Column(nullable = false)
     private String password;
 
-    @Max(20)
+    @Size(max = 20)
     @Column(name = "nickname",nullable = false ,unique = true)
     private String nickname;
 
