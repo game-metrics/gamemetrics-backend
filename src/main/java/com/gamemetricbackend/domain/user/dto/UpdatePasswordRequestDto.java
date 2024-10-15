@@ -1,5 +1,7 @@
 package com.gamemetricbackend.domain.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +9,7 @@ import lombok.Setter;
 @Setter
 public class UpdatePasswordRequestDto {
     String currentPassword;
+    @Size(max = 50,message = "password maximum length is 50")
+    @NotBlank(message = "password is compulsory")
     String newPassword;
 }
