@@ -39,4 +39,9 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
         chatRoom.handlerActions(session, chatMessage, chatService);
     }
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        super.afterConnectionEstablished(session);
+    }
 }
