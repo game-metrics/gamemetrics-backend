@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService{
         List<Authority> Authority = new ArrayList<>();
         Authority.add(authorityName);
 
-        return new SignUpResponseDto(user.getUsername(),user.getUsername(),Authority);
+        return new SignUpResponseDto(user.getEmail(),user.getEmail(),Authority);
     }
 
     @Override

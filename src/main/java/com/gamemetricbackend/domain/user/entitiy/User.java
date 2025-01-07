@@ -29,15 +29,12 @@ public class User extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Size(max = 20)
     @Column(nullable = false,unique = true)
-    private String username;
+    private String email;
 
-    @Size(max = 50)
     @Column(nullable = false)
     private String password;
 
-    @Size(max = 20)
     @Column(name = "nickname",nullable = false ,unique = true)
     private String nickname;
 
@@ -47,7 +44,7 @@ public class User extends TimeStamped {
 
     public User(SignupRequestDto requestDto) {
         super();
-        this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
         this.password = requestDto.getPassword();
         this.nickname = requestDto.getNickname();
         this.role = UserRoleEnum.USER;
@@ -62,8 +59,8 @@ public class User extends TimeStamped {
         this.role = userRoleEnum;
     }
 
-    public User(String username, String password,String nickname, UserRoleEnum userRoleEnum) {
-        this.username = username;
+    public User(String email, String password,String nickname, UserRoleEnum userRoleEnum) {
+        this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = userRoleEnum;

@@ -27,8 +27,8 @@ public class UserRepositoryQueryImpl implements UserRepositoryQuery{
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        BooleanExpression predicate = qUser.username.eq(username);
+    public Optional<User> findByEmail(String email) {
+        BooleanExpression predicate = qUser.email.eq(email);
 
         return Optional.ofNullable(querydslConfig.jpaQueryFactory()
             .select(Projections.fields(User.class, qUser.id,qUser.password,qUser.role))

@@ -43,8 +43,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(),
                 LoginRequestDto.class);
 
-            User user = userRepository.findByUsername(
-                    requestDto.getUsername())
+            User user = userRepository.findByEmail(
+                    requestDto.getEmail())
                 .orElseThrow(
                     () -> new BadCredentialsException("잘못된 아이디를 입력하셨습니다."));
             if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
