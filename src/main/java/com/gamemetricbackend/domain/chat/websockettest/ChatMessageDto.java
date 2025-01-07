@@ -5,14 +5,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChatMessage {
+public class ChatMessageDto {
     public enum MessageType{
-        ENTER, TALK
-        //처음 입장인지 아닌지 구별하는 Enum
+        JOIN, TALK, LEAVE
     }
     //단순 DTO
     private MessageType type;
-    private String roomId;
+    private Long roomId;
     private String sender;
     private String message;
 }

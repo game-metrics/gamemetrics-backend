@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 public class SignupRequestDto {
 
-    @Size(max = 20,message = "username maximum length is 20")
+    @Size(max = 50,message = "username maximum length is 50")
     @NotBlank(message = "username is compulsory")
-    private String username;
+    private String email;
 
     @Size(max = 50,message = "password maximum length is 50")
     @NotBlank(message = "password is compulsory")
