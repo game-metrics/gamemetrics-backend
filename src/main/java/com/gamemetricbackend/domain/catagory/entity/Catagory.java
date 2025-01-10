@@ -21,7 +21,7 @@ public class Catagory extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String catagory;
 
     public Catagory(String catagory) {

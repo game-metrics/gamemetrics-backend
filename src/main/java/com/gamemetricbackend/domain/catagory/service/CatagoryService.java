@@ -2,9 +2,11 @@ package com.gamemetricbackend.domain.catagory.service;
 
 import com.esotericsoftware.minlog.Log;
 import com.gamemetricbackend.domain.catagory.dto.CatagoryCreationDto;
+import com.gamemetricbackend.domain.catagory.dto.CatagoryResponseDto;
 import com.gamemetricbackend.domain.catagory.entity.Catagory;
 import com.gamemetricbackend.domain.catagory.repository.CatagoryRepository;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +29,9 @@ public class CatagoryService {
             return false;
         }
         return true;
+    }
+
+    public List<CatagoryResponseDto> getCatagoryList() {
+        return catagoryRepository.getAllCatagory();
     }
 }
