@@ -5,6 +5,7 @@ package com.gamemetricbackend.domain.broadcast.entitiy;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
 
+import com.gamemetricbackend.domain.catagory.entity.Catagory;
 import com.gamemetricbackend.global.entity.TimeStamped;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
 import jakarta.persistence.Column;
@@ -46,10 +47,14 @@ public class Broadcast extends TimeStamped {
     @Column(nullable = false)
     private String thumbNailUrl;
 
+    @Column
+    private Long catagoryId;
+
     public Broadcast(Long userId,BroadcastCreationDto broadcastCreationDto) {
         this.title = broadcastCreationDto.getTitle();
         this.thumbNailUrl = broadcastCreationDto.getThumbNailUrl();
         this.userId = userId;
+        this.catagoryId = broadcastCreationDto.getCatagoryId();
         this.broadcastStatus = BroadcastStatus.ONAIR;
     }
 
