@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = "User Controller Swagger", description = "Response Estimate API")
 public class UserController {
     //todo : the whole login and jwt system might be moved onto a AWS Cognito User pool and Identity pool
+    // 아마 학습 목적으로 aws 유저풀 같은 시스템으로 유저를 관리 할수 있습니다.
     private final UserService userService;
 
     @PostMapping
@@ -49,7 +50,7 @@ public class UserController {
             .body(ResponseDto.success(userService.UpdatePassword(userDetails.getUser().getId(), updatePasswordRequestDto)));
     }
 
-    @Operation(summary = "User login", description = "Authenticates the user and returns a JWT token")
+    @Operation(summary = "Kakao Login", description = "Kakao login")
     @PostMapping("/login")
     // AuththenticationFilter 에 이미 setFilterProcessesUrl("/users/login"); 해놨습니다.
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
