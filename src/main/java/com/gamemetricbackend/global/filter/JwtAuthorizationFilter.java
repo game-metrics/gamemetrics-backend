@@ -64,7 +64,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         log.info("creating Authentication");
         User user;
         // todo need to refactor, fix why the info.get("auth", ... can not convert to UserRoleEnum.class
-        if(info.get("auth",String.class).equals("ADMIN")){
+        if(info.get("role",String.class).equals("ADMIN")){
             user = new User(info.get("userId", Long.class), UserRoleEnum.ADMIN);
             //user = new User(info.get("userId", Long.class), info.get("auth",UserRoleEnum.class));
         }

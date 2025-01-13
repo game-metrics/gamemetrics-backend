@@ -8,4 +8,5 @@ import lombok.Setter;
 public class BroadcastCreationDto {
     String title;
     String thumbNailUrl;
+    Long catagoryId;
 }
