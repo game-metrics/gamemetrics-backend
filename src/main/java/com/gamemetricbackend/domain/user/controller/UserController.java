@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @Operation(summary = "Kakao Login", description = "Kakao login")
-    @PostMapping("/login")
+    @PostMapping("/login/oauth2/callback/kakao")
     // AuththenticationFilter 에 이미 setFilterProcessesUrl("/users/login"); 해놨습니다.
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
         return ResponseEntity.ok().build();
