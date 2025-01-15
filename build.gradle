@@ -72,7 +72,8 @@ dependencies {
     implementation 'org.springframework:spring-websocket:6.1.13'
 
     //Oauth
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'}
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+}
 
 tasks.named('test') {
     useJUnitPlatform()
