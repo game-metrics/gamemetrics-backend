@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
-import com.gamemetricbackend.global.dto.KakaoUserInfoDto;
+import com.gamemetricbackend.global.dto.OauthUserInfoDto;
 import com.gamemetricbackend.global.util.JwtUtil;
 import java.net.URI;
 import java.util.Map;
@@ -33,27 +33,29 @@ public class OAuthServiceImpl implements OAuthService{
     private RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
-    public OAuthServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder , JwtUtil jwtUtil){
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-        this.restTemplate = restTemplateBuilder.build();
-    }
-
     //Kakao
     @Value("${kakao.client.id}")
     private String clientId;
     @Value("${kakao.redirect.uri}")
     private String redirectUri;
 
+    public OAuthServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder , JwtUtil jwtUtil){
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+        this.restTemplate = restTemplateBuilder.build();
+    }
     public String KakaoAuth(Map<String, String> requestBody) throws JsonProcessingException {
+
         String code = requestBody.get("code");
+        String url = "https://kauth.kakao.com";
+        String path = "/oauth/token";
 
         // 1. "인가 코드"로 "액세스 토큰" 요청
-        String accessToken = getToken(code);
+        String accessToken = getToken(code,url, path,clientId,redirectUri);
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
-        KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
+        OauthUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
         // 3. 필요시에 회원가입
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
@@ -64,11 +66,16 @@ public class OAuthServiceImpl implements OAuthService{
         return createToken;
     }
 
-    private String getToken(String code) throws JsonProcessingException {
+    @Override
+    public String GoogleAuth(Map<String, String> requestBody) {
+        return null;
+    }
+
+    private String getToken(String code , String url , String path , String clientId ,String redirectUri) throws JsonProcessingException {
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
-            .fromUriString("https://kauth.kakao.com")
-            .path("/oauth/token")
+            .fromUriString(url)
+            .path(path)
             .encode()
             .build()
             .toUri();
@@ -100,7 +107,7 @@ public class OAuthServiceImpl implements OAuthService{
         return jsonNode.get("access_token").asText();
     }
 
-    private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+    private OauthUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
             .fromUriString("https://kapi.kakao.com")
@@ -133,10 +140,10 @@ public class OAuthServiceImpl implements OAuthService{
             .get("email").asText();
 
         Log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
-        return new KakaoUserInfoDto(id, nickname, email);
+        return new OauthUserInfoDto(id, nickname, email);
     }
 
-    private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
+    private User registerKakaoUserIfNeeded(OauthUserInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao 이메일 이 있는지 확인
         User user = userRepository.findByEmail(kakaoUserInfo.getEmail()).orElse(null);
 
