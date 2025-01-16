@@ -15,7 +15,10 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,17 +61,71 @@ public class OAuthServiceImpl implements OAuthService{
         OauthUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
         // 3. 필요시에 회원가입
-        User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
+        User kakaoUser = registerUserIfNeeded(kakaoUserInfo.getEmail(),kakaoUserInfo.getNickname());
 
         // 4. Jwt 토큰 반환
-        String createToken = jwtUtil.createToken(kakaoUser.getId(), kakaoUser.getRole());
-
-        return createToken;
+        return jwtUtil.createToken(kakaoUser.getId(), kakaoUser.getRole());
     }
 
     @Override
-    public String GoogleAuth(Map<String, String> requestBody) {
-        return null;
+    public String GoogleAuth(Map<String, String> requestBody) throws JsonProcessingException {
+        String code = requestBody.get("code");
+
+        // 1. request Authentication token using the given code "인가 코드"로 "액세스 토큰" 요청
+        String accessToken = getGoogleToken(code);
+
+        // 2. Using token to host Google API to get users information, 토큰으로 google API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
+        Map<String, Object> userInfo = getGoogleUserinfo(accessToken);
+
+        // 3. Extracting email and password 이메일 하고 닉 가져오기.
+        String email = (String) userInfo.get("email");
+        String name = (String) userInfo.get("name");
+        Log.info(email +" : "+ name);
+
+        // Register if needed 필요시에 회원가입
+        User googleUser = registerUserIfNeeded(email,name);
+
+        // 4. Jwt 토큰 반환
+        return jwtUtil.createToken(googleUser.getId(), googleUser.getRole());
+    }
+
+    private Map<String, Object> getGoogleUserinfo(String accessToken) {
+        // TODO : Change the hard coding 하드코딩 제거
+        String userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
+        HttpHeaders authHeaders = new HttpHeaders();
+        authHeaders.setBearerAuth(accessToken);
+
+        HttpEntity<String> userInfoRequest = new HttpEntity<>(authHeaders);
+        ResponseEntity<Map> userInfoResponse = restTemplate.exchange(userInfoUrl, HttpMethod.GET, userInfoRequest, Map.class);
+
+        Map<String, Object> userInfo = userInfoResponse.getBody();
+        return userInfo;
+    }
+
+    private String getGoogleToken(String code) {
+        HttpHeaders headers = new HttpHeaders();
+        RestTemplate restTemplate = new RestTemplate();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        // TODO :fix the hard coding and import from app.properties 하드 코딩 제거
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("client_id", "175362941207-5utd0bap67slhe4o8511qjcacetb92fe.apps.googleusercontent.com");
+        params.add("client_secret", "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");
+        params.add("redirect_uri", "http://localhost:3000/sign-in/google");
+        params.add("grant_type", "authorization_code");
+
+        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
+        String tokenUrl = "https://oauth2.googleapis.com/token";
+
+        ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(tokenUrl, tokenRequest, Map.class);
+        Map<String, Object> tokenBody = tokenResponse.getBody();
+
+        if (tokenBody == null || !tokenBody.containsKey("access_token")) {
+            throw new IllegalStateException("Failed to retrieve access token");
+        }
+
+        return  (String) tokenBody.get("access_token");
     }
 
     private String getToken(String code , String url , String path , String clientId ,String redirectUri) throws JsonProcessingException {
@@ -143,20 +200,20 @@ public class OAuthServiceImpl implements OAuthService{
         return new OauthUserInfoDto(id, nickname, email);
     }
 
-    private User registerKakaoUserIfNeeded(OauthUserInfoDto kakaoUserInfo) {
+    private User registerUserIfNeeded(String email,String name) {
         // DB 에 중복된 Kakao 이메일 이 있는지 확인
-        User user = userRepository.findByEmail(kakaoUserInfo.getEmail()).orElse(null);
+        User user = userRepository.findByEmail(email).orElse(null);
 
         // 회원이 이미 있을경우
         if (user != null) {
             return user;
         }
 
+        Log.info("새로운 유저 생성");
         // 신규 회원가입
-        String password = UUID.randomUUID().toString();
-        String encodedPassword = passwordEncoder.encode(password);
+        String encodedPassword = passwordEncoder.encode(UUID.randomUUID().toString());
 
-        user = new User(kakaoUserInfo.getEmail(), encodedPassword, kakaoUserInfo.getNickname(), UserRoleEnum.USER);
+        user = new User(email, encodedPassword, name, UserRoleEnum.USER);
         userRepository.save(user);
 
         return user;

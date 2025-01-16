@@ -66,7 +66,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                 .requestMatchers(HttpMethod.POST,"/users").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/users/login/kakao").permitAll()
+                .requestMatchers(HttpMethod.POST,"/users/login/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/broadcasts").permitAll()
                 .requestMatchers(HttpMethod.GET,"/broadcasts/**").permitAll()
                 .requestMatchers("/chat").permitAll() // 임시 websocket 테스트용
