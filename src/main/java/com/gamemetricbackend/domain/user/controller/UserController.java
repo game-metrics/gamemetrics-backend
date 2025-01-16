@@ -58,4 +58,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success(oAuthService.KakaoAuth(requestBody)));
     }
+
+    @Operation(summary = "google Login", description = "google login")
+    @PostMapping("/login/google")
+    public ResponseEntity<ResponseDto<String>> GoogleLogin(@RequestBody Map<String, String> requestBody) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResponseDto.success(oAuthService.GoogleAuth(requestBody)));
+    }
 }
