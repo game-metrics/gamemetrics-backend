@@ -4,5 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 
 public interface OAuthService {
-    public String KakaoAuth(Map<String, String> requestBody) throws JsonProcessingException;
+    String KakaoAuth(Map<String, String> requestBody) throws JsonProcessingException;
+
+    String GoogleAuth(Map<String, String> requestBody);
 }
