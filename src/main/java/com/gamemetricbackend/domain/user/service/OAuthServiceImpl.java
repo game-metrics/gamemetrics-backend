@@ -50,7 +50,6 @@ public class OAuthServiceImpl implements OAuthService{
     private String googleRedirectUri;
     @Value("${google.user.info.url}")
     private String userInfoUrl;
-
     String googleTokenUrl = "https://oauth2.googleapis.com/token";
 
     public OAuthServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder , JwtUtil jwtUtil){
