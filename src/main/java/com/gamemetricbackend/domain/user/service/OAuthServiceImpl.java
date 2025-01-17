@@ -12,7 +12,6 @@ import com.gamemetricbackend.global.util.JwtUtil;
 import java.net.URI;
 import java.util.Map;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -38,9 +37,21 @@ public class OAuthServiceImpl implements OAuthService{
 
     //Kakao
     @Value("${kakao.client.id}")
-    private String clientId;
+    private String kakaoClientId;
     @Value("${kakao.redirect.uri}")
-    private String redirectUri;
+    private String kakaoRedirectUri;
+
+    //Google
+    @Value("${google.client.id}")
+    private String googleClientId;
+    @Value("${google.client.password}")
+    private String getGoogleClientPassword;
+    @Value("${google.redirect.url}")
+    private String googleRedirectUri;
+    @Value("${google.user.info.url}")
+    private String userInfoUrl;
+
+    String googleTokenUrl = "https://oauth2.googleapis.com/token";
 
     public OAuthServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder , JwtUtil jwtUtil){
         this.userRepository = userRepository;
@@ -55,7 +66,7 @@ public class OAuthServiceImpl implements OAuthService{
         String path = "/oauth/token";
 
         // 1. "인가 코드"로 "액세스 토큰" 요청
-        String accessToken = getToken(code,url, path,clientId,redirectUri);
+        String accessToken = getToken(code,url, path,kakaoClientId,kakaoRedirectUri);
 
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         OauthUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
@@ -90,8 +101,6 @@ public class OAuthServiceImpl implements OAuthService{
     }
 
     private Map<String, Object> getGoogleUserinfo(String accessToken) {
-        // TODO : Change the hard coding 하드코딩 제거
-        String userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
         HttpHeaders authHeaders = new HttpHeaders();
         authHeaders.setBearerAuth(accessToken);
 
@@ -107,18 +116,16 @@ public class OAuthServiceImpl implements OAuthService{
         RestTemplate restTemplate = new RestTemplate();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        // TODO :fix the hard coding and import from app.properties 하드 코딩 제거
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
-        params.add("client_id", "175362941207-5utd0bap67slhe4o8511qjcacetb92fe.apps.googleusercontent.com");
-        params.add("client_secret", "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");
-        params.add("redirect_uri", "http://localhost:3000/sign-in/google");
+        params.add("client_id", googleClientId);
+        params.add("client_secret", getGoogleClientPassword);
+        params.add("redirect_uri", googleRedirectUri);
         params.add("grant_type", "authorization_code");
 
         HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
-        String tokenUrl = "https://oauth2.googleapis.com/token";
 
-        ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(tokenUrl, tokenRequest, Map.class);
+        ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(googleTokenUrl, tokenRequest, Map.class);
         Map<String, Object> tokenBody = tokenResponse.getBody();
 
         if (tokenBody == null || !tokenBody.containsKey("access_token")) {
