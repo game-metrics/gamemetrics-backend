@@ -28,200 +28,128 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
-public class OAuthServiceImpl implements OAuthService{
+public class OAuthServiceImpl implements OAuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
-    //Kakao
     @Value("${kakao.client.id}")
     private String kakaoClientId;
+
     @Value("${kakao.redirect.uri}")
     private String kakaoRedirectUri;
 
-    //Google
     @Value("${google.client.id}")
     private String googleClientId;
+
     @Value("${google.client.password}")
-    private String getGoogleClientPassword;
+    private String googleClientPassword;
+
     @Value("${google.redirect.url}")
     private String googleRedirectUri;
+
     @Value("${google.user.info.url}")
     private String userInfoUrl;
-    String googleTokenUrl = "https://oauth2.googleapis.com/token";
 
-    public OAuthServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder , JwtUtil jwtUtil){
+    // todo : still thinking whether if i need to move the auth url on application.properties (git secret)
+    private static final String GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
+
+    public OAuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
         this.restTemplate = restTemplateBuilder.build();
     }
+
     public String KakaoAuth(Map<String, String> requestBody) throws JsonProcessingException {
-
         String code = requestBody.get("code");
-        String url = "https://kauth.kakao.com";
-        String path = "/oauth/token";
-
-        // 1. "인가 코드"로 "액세스 토큰" 요청
-        String accessToken = getToken(code,url, path,kakaoClientId,kakaoRedirectUri);
-
-        // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
+        String accessToken = getToken(code, "https://kauth.kakao.com", "/oauth/token", kakaoClientId, kakaoRedirectUri);
         OauthUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
-
-        // 3. 필요시에 회원가입
-        User kakaoUser = registerUserIfNeeded(kakaoUserInfo.getEmail(),kakaoUserInfo.getNickname());
-
-        // 4. Jwt 토큰 반환
+        User kakaoUser = registerUserIfNeeded(kakaoUserInfo.getEmail(), kakaoUserInfo.getNickname());
         return jwtUtil.createToken(kakaoUser.getId(), kakaoUser.getRole());
     }
 
     @Override
     public String GoogleAuth(Map<String, String> requestBody) throws JsonProcessingException {
         String code = requestBody.get("code");
-
-        // 1. request Authentication token using the given code "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getGoogleToken(code);
-
-        // 2. Using token to host Google API to get users information, 토큰으로 google API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
-        Map<String, Object> userInfo = getGoogleUserinfo(accessToken);
-
-        // 3. Extracting email and password 이메일 하고 닉 가져오기.
+        Map<String, Object> userInfo = getGoogleUserInfo(accessToken);
         String email = (String) userInfo.get("email");
         String name = (String) userInfo.get("name");
-        Log.info(email +" : "+ name);
-
-        // Register if needed 필요시에 회원가입
-        User googleUser = registerUserIfNeeded(email,name);
-
-        // 4. Jwt 토큰 반환
+        Log.info(email + " : " + name);
+        User googleUser = registerUserIfNeeded(email, name);
         return jwtUtil.createToken(googleUser.getId(), googleUser.getRole());
     }
 
-    private Map<String, Object> getGoogleUserinfo(String accessToken) {
-        HttpHeaders authHeaders = new HttpHeaders();
-        authHeaders.setBearerAuth(accessToken);
-
-        HttpEntity<String> userInfoRequest = new HttpEntity<>(authHeaders);
-        ResponseEntity<Map> userInfoResponse = restTemplate.exchange(userInfoUrl, HttpMethod.GET, userInfoRequest, Map.class);
-
-        Map<String, Object> userInfo = userInfoResponse.getBody();
-        return userInfo;
+    private Map<String, Object> getGoogleUserInfo(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        ResponseEntity<Map> response = restTemplate.exchange(userInfoUrl, HttpMethod.GET, request, Map.class);
+        return response.getBody();
     }
 
     private String getGoogleToken(String code) {
         HttpHeaders headers = new HttpHeaders();
-        RestTemplate restTemplate = new RestTemplate();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
         params.add("client_id", googleClientId);
-        params.add("client_secret", getGoogleClientPassword);
+        params.add("client_secret", googleClientPassword);
         params.add("redirect_uri", googleRedirectUri);
         params.add("grant_type", "authorization_code");
-
-        HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
-
-        ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(googleTokenUrl, tokenRequest, Map.class);
-        Map<String, Object> tokenBody = tokenResponse.getBody();
-
-        if (tokenBody == null || !tokenBody.containsKey("access_token")) {
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        ResponseEntity<Map> response = restTemplate.postForEntity(GOOGLE_TOKEN_URL, request, Map.class);
+        Map<String, Object> body = response.getBody();
+        if (body == null || !body.containsKey("access_token")) {
             throw new IllegalStateException("Failed to retrieve access token");
         }
-
-        return  (String) tokenBody.get("access_token");
+        return (String) body.get("access_token");
     }
 
-    private String getToken(String code , String url , String path , String clientId ,String redirectUri) throws JsonProcessingException {
-        // 요청 URL 만들기
-        URI uri = UriComponentsBuilder
-            .fromUriString(url)
-            .path(path)
-            .encode()
-            .build()
-            .toUri();
+    private OauthUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+        URI uri = UriComponentsBuilder.fromUriString("https://kapi.kakao.com").path("/v2/user/me").encode().build().toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        RequestEntity<MultiValueMap<String, String>> request = RequestEntity.post(uri).headers(headers).body(new LinkedMultiValueMap<>());
+        ResponseEntity<String> response = restTemplate.exchange(request, String.class);
+        JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
+        Long id = jsonNode.get("id").asLong();
+        String nickname = jsonNode.get("properties").get("nickname").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
+        Log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
+        return new OauthUserInfoDto(id, nickname, email);
+    }
 
-        // HTTP Header 생성
+    private String getToken(String code, String url, String path, String clientId, String redirectUri) throws JsonProcessingException {
+        URI uri = UriComponentsBuilder.fromUriString(url).path(path).encode().build().toUri();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", clientId);
         body.add("redirect_uri", redirectUri);
         body.add("code", code);
-
-        RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
-            .post(uri)
-            .headers(headers)
-            .body(body);
-
-        // HTTP 요청 보내기
-        ResponseEntity<String> response = restTemplate.exchange(
-            requestEntity,
-            String.class
-        );
-
-        // HTTP 응답 (JSON) -> 액세스 토큰 파싱
+        RequestEntity<MultiValueMap<String, String>> request = RequestEntity.post(uri).headers(headers).body(body);
+        ResponseEntity<String> response = restTemplate.exchange(request, String.class);
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
         return jsonNode.get("access_token").asText();
     }
 
-    private OauthUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
-        // 요청 URL 만들기
-        URI uri = UriComponentsBuilder
-            .fromUriString("https://kapi.kakao.com")
-            .encode()
-            .path("/v2/user/me")
-            .build()
-            .toUri();
-
-        // HTTP Header 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
-            .post(uri)
-            .headers(headers)
-            .body(new LinkedMultiValueMap<>());
-
-        // HTTP 요청 보내기
-        ResponseEntity<String> response = restTemplate.exchange(
-            requestEntity,
-            String.class
-        );
-
-        JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
-        Long id = jsonNode.get("id").asLong();
-        String nickname = jsonNode.get("properties")
-            .get("nickname").asText();
-        String email = jsonNode.get("kakao_account")
-            .get("email").asText();
-
-        Log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
-        return new OauthUserInfoDto(id, nickname, email);
-    }
-
-    private User registerUserIfNeeded(String email,String name) {
-        // DB 에 중복된 Kakao 이메일 이 있는지 확인
+    // if there is no matching email user it will generate a new user,
+    // 유저가 없을시에 유서를 새로 생성합니다
+    private User registerUserIfNeeded(String email, String name) {
         User user = userRepository.findByEmail(email).orElse(null);
-
-        // 회원이 이미 있을경우
         if (user != null) {
             return user;
         }
-
         Log.info("새로운 유저 생성");
-        // 신규 회원가입
         String encodedPassword = passwordEncoder.encode(UUID.randomUUID().toString());
-
         user = new User(email, encodedPassword, name, UserRoleEnum.USER);
         userRepository.save(user);
-
         return user;
     }
 }
