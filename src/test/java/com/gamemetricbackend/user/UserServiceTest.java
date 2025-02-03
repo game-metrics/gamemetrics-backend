@@ -36,7 +36,7 @@ public class UserServiceTest {
     void createUser() {
         //given
         SignupRequestDto userdto = new SignupRequestDto();
-        userdto.setUsername("testuser");
+        userdto.setEmail("testuser@naver.com");
         userdto.setPassword("testpassword");
         User user = new User(userdto);
 
@@ -49,7 +49,7 @@ public class UserServiceTest {
         SignUpResponseDto responseDto = userService.signUp(requestDto);
 
         //then
-        assertEquals(responseDto.getUsername(),user.getUsername());
+        assertEquals(responseDto.getUsername(),user.getEmail());
     }
 
     @Test
