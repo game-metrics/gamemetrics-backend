@@ -19,57 +19,63 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @RequiredArgsConstructor
 public class WebSocketChatHandler extends TextWebSocketHandler {
     private final ObjectMapper mapper;
+    Map<String, String> jsonMap = new HashMap<>();
 
     // 소켓 세션을 저장할 Set
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
-    // 채팅방 id와 소켓 세션을 저장할 Map
-    private final Map<Long,Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
+    // 채팅방 ID와 소켓 세션을 저장할 Map
+    private final Map<Long, Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
 
     // 소켓 연결 확인
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // TODO Auto-generated method stub
         log.info("{} 연결됨", session.getId());
         sessions.add(session);
-        session.sendMessage(new TextMessage("WebSocket 연결 완료"));
+        jsonMap.put("status", "connection success");
+        session.sendMessage(new TextMessage(mapper.writeValueAsString(jsonMap)));
     }
 
-    // 소켓 메세지 처리
+    // 소켓 메시지 처리
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        log.info("payload {}", payload);
+        log.info("payload: {}", payload);
 
-        // 클라이언트로부터 받은 메세지를 ChatMessageDto로 변환
+        // 클라이언트로부터 받은 메시지를 ChatMessageDto로 변환
         ChatMessageDto chatMessageDto = mapper.readValue(payload, ChatMessageDto.class);
-        log.info("session {}", chatMessageDto.toString());
+        log.info("session: {}", chatMessageDto.toString());
 
-        // 메세지 타입에 따라 분기
-        if(chatMessageDto.getType().equals(ChatMessageDto.MessageType.JOIN)){
-            // 입장 메세지
-            chatRoomSessionMap.computeIfAbsent(chatMessageDto.getRoomId(), s -> new HashSet<>()).add(session);
-            chatMessageDto.setMessage("님이 입장하셨습니다.");
-        }
-        else if(chatMessageDto.getType().equals(ChatMessageDto.MessageType.LEAVE)){
-            // 퇴장 메세지
-            chatRoomSessionMap.get(chatMessageDto.getRoomId()).remove(session);
-            System.out.println(chatMessageDto.getType());
-            chatMessageDto.setMessage("님이 퇴장하셨습니다.");
+        // 채팅방 세션 가져오기 (없으면 새로 생성)
+        Set<WebSocketSession> roomSessions = chatRoomSessionMap.computeIfAbsent(chatMessageDto.getRoomId(), k -> new HashSet<>());
+
+        // 메시지 타입에 따라 분기
+        if (chatMessageDto.getType() == ChatMessageDto.MessageType.JOIN) {
+            roomSessions.add(session);
+            chatMessageDto.setMessage(chatMessageDto.getSender() + "님이 입장하셨습니다.");
+        } else if (chatMessageDto.getType() == ChatMessageDto.MessageType.LEAVE) {
+            roomSessions.remove(session);
+            chatMessageDto.setMessage(chatMessageDto.getSender() + "님이 퇴장하셨습니다.");
         }
 
-        // 채팅 메세지 전송
-        for(WebSocketSession webSocketSession : chatRoomSessionMap.get(chatMessageDto.getRoomId())){
-            webSocketSession.sendMessage(new TextMessage(mapper.writeValueAsString(chatMessageDto)));
+        // 채팅 메시지 전송 (빈 채팅방이면 전송하지 않음)
+        if (!roomSessions.isEmpty()) {
+            String jsonMessage = mapper.writeValueAsString(chatMessageDto);
+            for (WebSocketSession webSocketSession : roomSessions) {
+                if (webSocketSession.isOpen()) {
+                    webSocketSession.sendMessage(new TextMessage(jsonMessage));
+                }
+            }
         }
     }
 
     // 소켓 연결 종료
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        // TODO Auto-generated method stub
         log.info("{} 연결 끊김", session.getId());
         sessions.remove(session);
-        session.sendMessage(new TextMessage("WebSocket 연결 종료"));
+
+        // 모든 채팅방에서 해당 세션 제거
+        chatRoomSessionMap.values().forEach(roomSessions -> roomSessions.remove(session));
     }
 }
