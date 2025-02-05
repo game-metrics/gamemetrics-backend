@@ -31,7 +31,7 @@ public class UserRepositoryQueryImpl implements UserRepositoryQuery{
         BooleanExpression predicate = qUser.email.eq(email);
 
         return Optional.ofNullable(querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(User.class, qUser.id,qUser.password,qUser.role))
+            .select(Projections.fields(User.class, qUser.id,qUser.password,qUser.nickname,qUser.role))
             .from(qUser)
             .where(predicate)
             .fetchOne());

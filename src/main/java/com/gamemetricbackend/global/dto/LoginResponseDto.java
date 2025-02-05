@@ -7,4 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoginResponseDto {
     String token;
+    String nickname;
 }

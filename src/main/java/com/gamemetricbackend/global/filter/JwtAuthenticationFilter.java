@@ -67,9 +67,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserRoleEnum role = user.getRole();
 
         String token = jwtUtil.createToken(id, role);
-        response.addHeader(AUTHORIZATION_HEADER, token);
+        //response.addHeader(AUTHORIZATION_HEADER, token);
 
-        LoginResponseDto loginRequestDto = new LoginResponseDto(token);
+        LoginResponseDto loginRequestDto = new LoginResponseDto(token,user.getNickname());
 
         String newResponse = new ObjectMapper().writeValueAsString(loginRequestDto);
         response.setContentType("application/json");
