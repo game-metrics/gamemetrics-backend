@@ -7,6 +7,7 @@ import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.service.OAuthService;
 import com.gamemetricbackend.domain.user.service.UserService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
+import com.gamemetricbackend.global.dto.LoginResponseDto;
 import com.gamemetricbackend.global.exception.NoSuchUserException;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,14 +55,14 @@ public class UserController {
 
     @Operation(summary = "Kakao Login", description = "Kakao login")
     @PostMapping("/login/kakao")
-    public ResponseEntity<ResponseDto<String>> KakaoLogin(@RequestBody Map<String, String> requestBody) throws JsonProcessingException {
+    public ResponseEntity<ResponseDto<LoginResponseDto>> KakaoLogin(@RequestBody Map<String, String> requestBody) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success(oAuthService.kakaoAuth(requestBody)));
     }
 
     @Operation(summary = "google Login", description = "google login")
     @PostMapping("/login/google")
-    public ResponseEntity<ResponseDto<String>> GoogleLogin(@RequestBody Map<String, String> requestBody) throws JsonProcessingException {
+    public ResponseEntity<ResponseDto<LoginResponseDto>> GoogleLogin(@RequestBody Map<String, String> requestBody) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success(oAuthService.googleAuth(requestBody)));
     }

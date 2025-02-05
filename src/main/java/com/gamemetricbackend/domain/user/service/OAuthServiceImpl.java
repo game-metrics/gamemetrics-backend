@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
+import com.gamemetricbackend.global.dto.LoginResponseDto;
 import com.gamemetricbackend.global.dto.OauthUserInfoDto;
 import com.gamemetricbackend.global.util.JwtUtil;
 import java.net.URI;
@@ -63,16 +64,17 @@ public class OAuthServiceImpl implements OAuthService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public String KakaoAuth(Map<String, String> requestBody) throws JsonProcessingException {
+    public LoginResponseDto KakaoAuth(Map<String, String> requestBody) throws JsonProcessingException {
         String code = requestBody.get("code");
         String accessToken = getToken(code, "https://kauth.kakao.com", "/oauth/token", kakaoClientId, kakaoRedirectUri);
         OauthUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
         User kakaoUser = registerUserIfNeeded(kakaoUserInfo.getEmail(), kakaoUserInfo.getNickname());
-        return jwtUtil.createToken(kakaoUser.getId(), kakaoUser.getRole());
+
+        return new LoginResponseDto(jwtUtil.createToken(kakaoUser.getId(), kakaoUser.getRole()),kakaoUser.getNickname());
     }
 
     @Override
-    public String GoogleAuth(Map<String, String> requestBody) throws JsonProcessingException {
+    public LoginResponseDto GoogleAuth(Map<String, String> requestBody) throws JsonProcessingException {
         String code = requestBody.get("code");
         String accessToken = getGoogleToken(code);
         Map<String, Object> userInfo = getGoogleUserInfo(accessToken);
@@ -80,7 +82,7 @@ public class OAuthServiceImpl implements OAuthService {
         String name = (String) userInfo.get("name");
         Log.info(email + " : " + name);
         User googleUser = registerUserIfNeeded(email, name);
-        return jwtUtil.createToken(googleUser.getId(), googleUser.getRole());
+        return new LoginResponseDto(jwtUtil.createToken(googleUser.getId(), googleUser.getRole()),googleUser.getNickname());
     }
 
     private Map<String, Object> getGoogleUserInfo(String accessToken) {
