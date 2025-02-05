@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.broadcast.repository;
 
+import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.BroadcastStatus;
 import com.gamemetricbackend.domain.broadcast.entitiy.QBroadcast;
@@ -20,12 +21,12 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
     QBroadcast qBroadcast = QBroadcast.broadcast;
 
     @Override
-    public Page<BroadcastCreationDto> findByTitle(String title, Pageable pageable) {
+    public Page<BroadCastResponseDto> findByTitle(String title, Pageable pageable) {
 
         BooleanExpression predicate = qBroadcast.title.containsIgnoreCase(title).and(qBroadcast.broadcastStatus.eq(BroadcastStatus.ONAIR)); // containsIgnoreCase for case-insensitive search
         System.out.println(qBroadcast.broadcastStatus);
-        List<BroadcastCreationDto> results = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.id,qBroadcast.thumbNailUrl, qBroadcast.title))
+        List<BroadCastResponseDto> results = querydslConfig.jpaQueryFactory()
+            .select(Projections.fields(BroadCastResponseDto.class, qBroadcast.id,qBroadcast.thumbNailUrl, qBroadcast.title))
             .from(qBroadcast)
             .where(predicate)
             .offset(pageable.getOffset())
@@ -38,19 +39,19 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
     }
 
     @Override
-    public Page<BroadcastCreationDto> getBroadcatePage(Pageable pageable) {
+    public Page<BroadCastResponseDto> getBroadcatePage(Pageable pageable) {
 
         BooleanExpression predicate =qBroadcast.broadcastStatus.eq(BroadcastStatus.ONAIR); // containsIgnoreCase for case-insensitive search
 
-        QueryResults<BroadcastCreationDto> results = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(BroadcastCreationDto.class, qBroadcast.id, qBroadcast.thumbNailUrl, qBroadcast.title,qBroadcast.catagoryId))
+        QueryResults<BroadCastResponseDto> results = querydslConfig.jpaQueryFactory()
+            .select(Projections.fields(BroadCastResponseDto.class, qBroadcast.id, qBroadcast.title,qBroadcast.thumbNailUrl,qBroadcast.catagoryId))
             .from(qBroadcast)
             .where(predicate)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetchResults();
 
-        List<BroadcastCreationDto> broadcasts = results.getResults(); // 페이징된 결과 리스트
+        List<BroadCastResponseDto> broadcasts = results.getResults(); // 페이징된 결과 리스트
         Long total = results.getTotal(); // 총 개수
 
         long totalCount = total != null ? total : 0L;

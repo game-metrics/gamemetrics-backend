@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.broadcast.service;
 
+import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
@@ -12,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 public interface BroadcastService {
     Optional<Broadcast> findById(Long id);
 
-    Page<BroadcastCreationDto> findByTitle(String title, Pageable pageable);
+    Page<BroadCastResponseDto> findByTitle(String title, Pageable pageable);
 
     Broadcast createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto);
 
@@ -22,5 +23,5 @@ public interface BroadcastService {
     Broadcast OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
         throws UserNotMatchException;
 
-    Page<BroadcastCreationDto> getBroadcastList(Pageable pageable);
+    Page<BroadCastResponseDto> getBroadcastList(Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.broadcast.service;
 
+import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
@@ -24,7 +25,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public Page<BroadcastCreationDto> findByTitle(String title,Pageable pageable) {
+    public Page<BroadCastResponseDto> findByTitle(String title,Pageable pageable) {
         return broadcastRepository.findByTitle(title, pageable);
     }
 
@@ -53,7 +54,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public Page<BroadcastCreationDto> getBroadcastList(Pageable pageable) {
+    public Page<BroadCastResponseDto> getBroadcastList(Pageable pageable) {
         return broadcastRepository.getBroadcatePage(pageable);
     }
 }

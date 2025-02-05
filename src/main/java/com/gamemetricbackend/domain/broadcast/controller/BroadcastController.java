@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.broadcast.controller;
 
+import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
@@ -42,14 +43,14 @@ public class BroadcastController {
 
     @Operation(summary = "방송 검색", description = "방송를 검색한다.")
     @GetMapping("/search")
-    public ResponseEntity<ResponseDto<Page<BroadcastCreationDto>>> findBroadcastByTitle(
+    public ResponseEntity<ResponseDto<Page<BroadCastResponseDto>>> findBroadcastByTitle(
         @RequestParam(name = "title") String title, @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.findByTitle(title, pageable)));
     }
 
     @Operation(summary = "방송 리스트(페이지) 불러오기", description = "방송를 리스트(페이지) 를 불러온다.")
     @GetMapping
-    public ResponseEntity<ResponseDto<Page<BroadcastCreationDto>>> getBroadcastPage(@PageableDefault Pageable pageable) {
+    public ResponseEntity<ResponseDto<Page<BroadCastResponseDto>>> getBroadcastPage(@PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.getBroadcastList(pageable)));
     }
 
