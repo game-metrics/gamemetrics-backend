@@ -1,8 +1,9 @@
 package com.gamemetricbackend.domain.user.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
-import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.SignupRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.UpdatePasswordRequestDto;
+import com.gamemetricbackend.domain.user.dto.response.UserInfoResponseDto;
 import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.service.OAuthService;
 import com.gamemetricbackend.domain.user.service.UserService;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 @Tag(name = "User Controller Swagger", description = "Response Estimate API")
 public class UserController {
-    //todo : the whole login and jwt system might be moved onto a AWS Cognito User pool and Identity pool
-    // 아마 추후에는 aws 유저 pool 같은 시스템으로 유저를 관리 할수 있습니다.
+
     private final UserService userService;
     private final OAuthService oAuthService;
 
@@ -41,6 +42,14 @@ public class UserController {
     ){
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseDto.success(userService.signUp(requestDto)));
+    }
+
+    @Operation(summary = "개인정보 가져오기", description = "유저가 본인 정보를 가져온다")
+    @GetMapping
+    public ResponseEntity<ResponseDto<UserInfoResponseDto>> getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResponseDto.success(userService.getProfile(userDetails.getUser())));
     }
 
     @Operation(summary = "비번변경", description = "비번를 변경한다.")
