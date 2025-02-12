@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
-import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.SignupRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.UpdatePasswordRequestDto;
 import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.repository.UserRepository;

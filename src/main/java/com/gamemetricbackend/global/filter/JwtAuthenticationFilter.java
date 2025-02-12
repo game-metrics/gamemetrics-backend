@@ -1,9 +1,7 @@
 package com.gamemetricbackend.global.filter;
 
-import static com.gamemetricbackend.global.util.JwtUtil.AUTHORIZATION_HEADER;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gamemetricbackend.domain.user.dto.LoginRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.LoginRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import com.gamemetricbackend.domain.user.repository.UserRepository;

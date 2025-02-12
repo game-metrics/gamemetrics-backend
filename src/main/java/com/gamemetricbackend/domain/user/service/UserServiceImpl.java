@@ -1,14 +1,14 @@
 package com.gamemetricbackend.domain.user.service;
 
+import com.gamemetricbackend.domain.user.dto.response.UserInfoResponseDto;
 import com.gamemetricbackend.domain.user.dto.temporal.Authority;
 import com.gamemetricbackend.domain.user.dto.temporal.SignUpResponseDto;
-import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
-import com.gamemetricbackend.domain.user.dto.UpdatePasswordRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.SignupRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.UpdatePasswordRequestDto;
 import com.gamemetricbackend.domain.user.entitiy.User;
 import com.gamemetricbackend.domain.user.repository.UserRepository;
 import com.gamemetricbackend.global.exception.NoSuchUserException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +66,10 @@ public class UserServiceImpl implements UserService{
             return user.UpdatePassword(passwordEncoder.encode(updatePasswordRequestDto.getNewPassword()));
         }
         return false;
+    }
+
+    @Override
+    public UserInfoResponseDto getProfile(User user) {
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 package com.gamemetricbackend.domain.user.entitiy;
 
 
-import com.gamemetricbackend.domain.user.dto.SignupRequestDto;
+import com.gamemetricbackend.domain.user.dto.request.SignupRequestDto;
 import com.gamemetricbackend.global.entity.TimeStamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,12 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Size;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity

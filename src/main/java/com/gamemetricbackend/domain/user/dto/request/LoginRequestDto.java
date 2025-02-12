@@ -1,4 +1,4 @@
-package com.gamemetricbackend.domain.user.dto;
+package com.gamemetricbackend.domain.user.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
