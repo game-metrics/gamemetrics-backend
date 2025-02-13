@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,15 +44,9 @@ public class UserServiceImpl implements UserService{
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
 
-        // todo : remove all below after the assignment check.
         User user = userRepository.save(new User(requestDto));
 
-        Authority authorityName = new Authority(user.getRole());
-
-        List<Authority> Authority = new ArrayList<>();
-        Authority.add(authorityName);
-
-        return new SignUpResponseDto(user.getEmail(),user.getEmail(),Authority);
+        return new SignUpResponseDto(user.getEmail(),user.getEmail());
     }
 
     @Override
@@ -69,7 +65,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserInfoResponseDto getProfile(User user) {
-        return null;
+    public UserInfoResponseDto getProfile(Long id) throws NoSuchUserException {
+        // 토큰에는 유저는 id 랑 role 만 가지고 있다.
+        return new UserInfoResponseDto(userRepository.findById(id).orElseThrow(NoSuchUserException::new));
+    }
+
+    @Override
+    public Page<UserInfoResponseDto> searchUser(String nickName, Pageable pageable) {
+        return userRepository.SearchUsersByNickName(nickName,pageable);
     }
 }
