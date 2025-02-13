@@ -55,6 +55,7 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     @Override
     public Page<BroadCastResponseDto> getBroadcastList(Pageable pageable) {
-        return broadcastRepository.getBroadcatePage(pageable);
+        return broadcastRepository.getBroadcastPage(pageable);
+
     }
 }

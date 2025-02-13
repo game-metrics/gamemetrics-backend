@@ -39,7 +39,7 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
     }
 
     @Override
-    public Page<BroadCastResponseDto> getBroadcatePage(Pageable pageable) {
+    public Page<BroadCastResponseDto> getBroadcastPage(Pageable pageable) {
 
         BooleanExpression predicate =qBroadcast.broadcastStatus.eq(BroadcastStatus.ONAIR); // containsIgnoreCase for case-insensitive search
 
