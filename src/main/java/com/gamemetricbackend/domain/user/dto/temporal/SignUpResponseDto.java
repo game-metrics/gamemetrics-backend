@@ -13,6 +13,4 @@ import lombok.Setter;
 public class SignUpResponseDto {
     private String username;
     private String nickname;
-    // todo remove after the assignment confirmation
-    private List<Authority> authorities;
 }
