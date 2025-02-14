@@ -30,13 +30,6 @@ public class UserServiceImpl implements UserService{
     String adminToken;
 
     @Override
-    public Optional<User> findById(
-        Long id
-    ){
-        return userRepository.findById(id);
-    }
-
-    @Override
     public SignUpResponseDto signUp(
         SignupRequestDto requestDto) {
         if(requestDto.getAdminToken().equals(adminToken)){
