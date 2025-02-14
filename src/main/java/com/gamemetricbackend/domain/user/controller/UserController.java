@@ -75,15 +75,15 @@ public class UserController {
     /**
      * 닉네임을 기준으로 사용자를 검색합니다.
      *
-     * @param nickName 검색할 사용자 닉네임
+     * @param name 검색할 사용자 닉네임
      * @param pageable 페이징 정보
      * @return 검색된 사용자 목록을 포함한 ResponseEntity
      */
     @Operation(summary = "유저검색", description = "유저를 검색한다")
-    @GetMapping()
-    public ResponseEntity<ResponseDto<Page<UserInfoResponseDto>>> searchUser(@RequestParam String nickName, @PageableDefault Pageable pageable) {
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto<Page<UserInfoResponseDto>>> searchUser(@RequestParam("name") String name, @PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ResponseDto.success(userService.searchUser(nickName, pageable)));
+            .body(ResponseDto.success(userService.searchUser(name, pageable)));
     }
 
     /**
