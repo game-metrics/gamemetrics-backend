@@ -46,7 +46,7 @@ public class UserRepositoryQueryImpl implements UserRepositoryQuery{
 
     @Override
     public Page<UserInfoResponseDto> SearchUsersByNickName(String nickName, Pageable pageable) {
-        BooleanExpression predicate = qUser.nickname.eq(nickName);
+        BooleanExpression predicate = qUser.nickname.contains(nickName);
 
         QueryResults<UserInfoResponseDto> results = querydslConfig.jpaQueryFactory()
             .select(Projections.fields(UserInfoResponseDto.class, qUser.email,qUser.nickname))
