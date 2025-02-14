@@ -30,13 +30,6 @@ public class UserServiceImpl implements UserService{
     String adminToken;
 
     @Override
-    public Optional<User> findById(
-        Long id
-    ){
-        return userRepository.findById(id);
-    }
-
-    @Override
     public SignUpResponseDto signUp(
         SignupRequestDto requestDto) {
         if(requestDto.getAdminToken().equals(adminToken)){
@@ -71,7 +64,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Page<UserInfoResponseDto> searchUser(String nickName, Pageable pageable) {
-        return userRepository.SearchUsersByNickName(nickName,pageable);
+    public Page<UserInfoResponseDto> searchUser(String name, Pageable pageable) {
+        return userRepository.SearchUsersByNickName(name,pageable);
     }
 }

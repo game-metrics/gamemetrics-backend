@@ -2,7 +2,9 @@ package com.gamemetricbackend.domain.user.dto.response;
 
 import com.gamemetricbackend.domain.user.entitiy.User;
 import java.util.Optional;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class UserInfoResponseDto {
     private String email;
     private String nickname;

@@ -67,6 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers(HttpMethod.POST,"/users").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
                 .requestMatchers(HttpMethod.POST,"/users/login/**").permitAll()
+                .requestMatchers(HttpMethod.GET,"/users/search").permitAll()
                 .requestMatchers(HttpMethod.GET,"/broadcasts").permitAll()
                 .requestMatchers(HttpMethod.GET,"/broadcasts/**").permitAll()
                 .requestMatchers("/chat").permitAll() // 임시 websocket 테스트용

@@ -1,5 +1,6 @@
 package com.gamemetricbackend.domain.user.repository;
 
+import com.esotericsoftware.minlog.Log;
 import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.user.dto.response.UserInfoResponseDto;
 import com.gamemetricbackend.domain.user.entitiy.QUser;
@@ -46,21 +47,24 @@ public class UserRepositoryQueryImpl implements UserRepositoryQuery{
 
     @Override
     public Page<UserInfoResponseDto> SearchUsersByNickName(String nickName, Pageable pageable) {
-        BooleanExpression predicate = qUser.nickname.eq(nickName);
+        BooleanExpression predicate = qUser.nickname.containsIgnoreCase(nickName); // Case-insensitive search
 
         QueryResults<UserInfoResponseDto> results = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(UserInfoResponseDto.class, qUser.email,qUser.nickname))
+            .select(Projections.fields(
+                UserInfoResponseDto.class,
+                qUser.email,
+                qUser.nickname
+            ))
             .from(qUser)
             .where(predicate)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetchResults();
 
-        List<UserInfoResponseDto> userList = results.getResults(); // 페이징된 결과 리스트
-        Long total = results.getTotal(); // 총 개수
-
-        long totalCount = total != null ? total : 0L;
+        List<UserInfoResponseDto> userList = results.getResults();
+        long totalCount = results.getTotal();
 
         return new PageImpl<>(userList, pageable, totalCount);
     }
+
 }
