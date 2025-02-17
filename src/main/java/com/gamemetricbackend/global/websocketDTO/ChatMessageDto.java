@@ -1,4 +1,4 @@
-package com.gamemetricbackend.domain.chat.websockettest;
+package com.gamemetricbackend.global.websocketDTO;
 
 import lombok.Getter;
 import lombok.Setter;
