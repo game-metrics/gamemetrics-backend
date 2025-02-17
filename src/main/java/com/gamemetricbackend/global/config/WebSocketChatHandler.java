@@ -1,7 +1,7 @@
 package com.gamemetricbackend.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gamemetricbackend.domain.chat.websockettest.ChatMessageDto;
+import com.gamemetricbackend.global.websocketDTO.ChatMessageDto;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
