@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class Dib {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "follower_Id", nullable = false)
