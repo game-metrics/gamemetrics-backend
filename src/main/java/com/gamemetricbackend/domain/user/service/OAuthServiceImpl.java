@@ -54,8 +54,8 @@ public class OAuthServiceImpl implements OAuthService {
     @Value("${google.user.info.url}")
     private String userInfoUrl;
 
-    // todo : still thinking whether if i need to move the auth url on application.properties (git secret)
-    private static final String GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
+    @Value("${google.auth.url}")
+    private String googleTokenUrl ;
 
     public OAuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RestTemplateBuilder restTemplateBuilder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
@@ -80,7 +80,6 @@ public class OAuthServiceImpl implements OAuthService {
         Map<String, Object> userInfo = getGoogleUserInfo(accessToken);
         String email = (String) userInfo.get("email");
         String name = (String) userInfo.get("name");
-        Log.info(email + " : " + name);
         User googleUser = registerUserIfNeeded(email, name);
         return new LoginResponseDto(jwtUtil.createToken(googleUser.getId(), googleUser.getRole()),googleUser.getNickname());
     }
@@ -103,7 +102,7 @@ public class OAuthServiceImpl implements OAuthService {
         params.add("redirect_uri", googleRedirectUri);
         params.add("grant_type", "authorization_code");
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-        ResponseEntity<Map> response = restTemplate.postForEntity(GOOGLE_TOKEN_URL, request, Map.class);
+        ResponseEntity<Map> response = restTemplate.postForEntity(googleTokenUrl, request, Map.class);
         Map<String, Object> body = response.getBody();
         if (body == null || !body.containsKey("access_token")) {
             throw new IllegalStateException("Failed to retrieve access token");
