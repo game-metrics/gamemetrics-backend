@@ -1,4 +1,4 @@
-package com.gamemetricbackend.global.websocketDTO;
+package com.gamemetricbackend.global.dto;
 
 import lombok.Getter;
 import lombok.Setter;
