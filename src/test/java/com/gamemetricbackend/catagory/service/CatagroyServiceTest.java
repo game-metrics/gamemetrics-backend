@@ -1,9 +1,9 @@
 package com.gamemetricbackend.catagory.service;
 
-import com.gamemetricbackend.domain.catagory.dto.CatagoryCreationDto;
-import com.gamemetricbackend.domain.catagory.dto.CatagoryResponseDto;
-import com.gamemetricbackend.domain.catagory.entity.Catagory;
-import com.gamemetricbackend.domain.catagory.repository.CatagoryRepository;
+import com.gamemetricbackend.domain.catagory.dto.CategoryCreationDto;
+import com.gamemetricbackend.domain.catagory.dto.CategoryResponseDto;
+import com.gamemetricbackend.domain.catagory.entity.Category;
+import com.gamemetricbackend.domain.catagory.repository.CategoryRepository;
 import com.gamemetricbackend.domain.catagory.service.CatagoryService;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,10 +21,10 @@ import static org.mockito.Mockito.*;
 class CatagoryServiceTest {
 
     @Mock
-    private CatagoryRepository catagoryRepository;
+    private CategoryRepository categoryRepository;
 
     @InjectMocks
-    private CatagoryService catagoryService;
+    private CatagoryService categoryService;
 
     @BeforeEach
     void setUp() {
@@ -34,57 +34,57 @@ class CatagoryServiceTest {
     @Test
     void create_Catagory_Successful_AdminRole() {
         // Arrange
-        CatagoryCreationDto catagoryCreationDto = new CatagoryCreationDto("New Category");
+        CategoryCreationDto catagoryCreationDto = new CategoryCreationDto("New Category");
         UserRoleEnum role = UserRoleEnum.ADMIN;
 
         // Act
-        boolean result = catagoryService.create(catagoryCreationDto, role);
+        boolean result = categoryService.create(catagoryCreationDto, role);
 
         // Assert
         assertTrue(result);
-        verify(catagoryRepository, times(1)).save(any(Catagory.class));  // Verifying save was called
+        verify(categoryRepository, times(1)).save(any(Category.class));  // Verifying save was called
     }
 
     @Test
     void create_Catagory_Failure_AlreadyExists() {
         // Arrange
-        CatagoryCreationDto catagoryCreationDto = new CatagoryCreationDto("Existing Category");
+        CategoryCreationDto catagoryCreationDto = new CategoryCreationDto("Existing Category");
         UserRoleEnum role = UserRoleEnum.ADMIN;
-        doThrow(new RuntimeException("Category already exists")).when(catagoryRepository).save(any(Catagory.class));
+        doThrow(new RuntimeException("Category already exists")).when(categoryRepository).save(any(Category.class));
 
         // Act
-        boolean result = catagoryService.create(catagoryCreationDto, role);
+        boolean result = categoryService.create(catagoryCreationDto, role);
 
         // Assert
         assertFalse(result);
-        verify(catagoryRepository, times(1)).save(any(Catagory.class));
+        verify(categoryRepository, times(1)).save(any(Category.class));
     }
 
     @Test
     void create_Catagory_Failure_NoPermission() {
         // Arrange
-        CatagoryCreationDto catagoryCreationDto = new CatagoryCreationDto("New Category");
+        CategoryCreationDto catagoryCreationDto = new CategoryCreationDto("New Category");
         UserRoleEnum role = UserRoleEnum.USER;  // Non-admin user
 
         // Act
-        boolean result = catagoryService.create(catagoryCreationDto, role);
+        boolean result = categoryService.create(catagoryCreationDto, role);
 
         // Assert
         assertFalse(result);
-        verify(catagoryRepository, times(0)).save(any(Catagory.class));  // Verifying save was not called
+        verify(categoryRepository, times(0)).save(any(Category.class));  // Verifying save was not called
     }
 
     @Test
     void getCatagoryList_ReturnsCatagoryList() {
         // Arrange
-        CatagoryResponseDto catagoryResponseDto1 = new CatagoryResponseDto(10L,"Category1");
-        CatagoryResponseDto catagoryResponseDto2 = new CatagoryResponseDto(11L,"Category2");
-        List<CatagoryResponseDto> expectedList = Arrays.asList(catagoryResponseDto1, catagoryResponseDto2);
+        CategoryResponseDto catagoryResponseDto1 = new CategoryResponseDto(10L,"Category1");
+        CategoryResponseDto catagoryResponseDto2 = new CategoryResponseDto(11L,"Category2");
+        List<CategoryResponseDto> expectedList = Arrays.asList(catagoryResponseDto1, catagoryResponseDto2);
 
-        when(catagoryRepository.getAllCatagory()).thenReturn(expectedList);
+        when(categoryRepository.getAllCatagory()).thenReturn(expectedList);
 
         // Act
-        List<CatagoryResponseDto> result = catagoryService.getCatagoryList();
+        List<CategoryResponseDto> result = categoryService.getCategoryList();
 
         // Assert
         assertEquals(expectedList, result);

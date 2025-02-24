@@ -13,18 +13,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "catagory")
+@Table(name = "category")
 @NoArgsConstructor
-public class Catagory extends TimeStamped {
+public class Category extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false,unique = true)
-    private String catagory;
+    private String category;
 
-    public Catagory(String catagory) {
-        this.catagory = catagory;
+    public Category(String category) {
+        this.category = category;
     }
 }

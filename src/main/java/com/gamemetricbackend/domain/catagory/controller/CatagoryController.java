@@ -1,13 +1,10 @@
 package com.gamemetricbackend.domain.catagory.controller;
 
-import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
-import com.gamemetricbackend.domain.catagory.dto.CatagoryCreationDto;
-import com.gamemetricbackend.domain.catagory.dto.CatagoryResponseDto;
-import com.gamemetricbackend.domain.catagory.entity.Catagory;
+import com.gamemetricbackend.domain.catagory.dto.CategoryCreationDto;
+import com.gamemetricbackend.domain.catagory.dto.CategoryResponseDto;
 import com.gamemetricbackend.domain.catagory.service.CatagoryService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +15,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/catagory")
+@RequestMapping("/category")
 @RequiredArgsConstructor
 public class CatagoryController {
     private final CatagoryService catagoryService;
     @PostMapping
-    public ResponseEntity<ResponseDto<Boolean>> createCatagory(
+    public ResponseEntity<ResponseDto<Boolean>> createCategory(
         @AuthenticationPrincipal UserDetailsImpl userDetails
-        ,@RequestBody CatagoryCreationDto catagoryCreationDto){
+        ,@RequestBody CategoryCreationDto catagoryCreationDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(
             catagoryService.create(catagoryCreationDto,userDetails.getRole())));
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDto<List<CatagoryResponseDto>>> getCatagoryList(){
+    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> getCategoryList(){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(
-            catagoryService.getCatagoryList()));
+            catagoryService.getCategoryList()));
     }
 }
