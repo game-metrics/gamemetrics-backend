@@ -1,10 +1,10 @@
-package com.gamemetricbackend.catagory.service;
+package com.gamemetricbackend.category.service;
 
-import com.gamemetricbackend.domain.catagory.dto.CategoryCreationDto;
-import com.gamemetricbackend.domain.catagory.dto.CategoryResponseDto;
-import com.gamemetricbackend.domain.catagory.entity.Category;
-import com.gamemetricbackend.domain.catagory.repository.CategoryRepository;
-import com.gamemetricbackend.domain.catagory.service.CatagoryService;
+import com.gamemetricbackend.domain.category.dto.CategoryCreationDto;
+import com.gamemetricbackend.domain.category.dto.CategoryResponseDto;
+import com.gamemetricbackend.domain.category.entity.Category;
+import com.gamemetricbackend.domain.category.repository.CategoryRepository;
+import com.gamemetricbackend.domain.category.service.CategoryService;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,13 +18,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CatagoryServiceTest {
+class CategoryServiceTest {
 
     @Mock
     private CategoryRepository categoryRepository;
 
     @InjectMocks
-    private CatagoryService categoryService;
+    private CategoryService categoryService;
 
     @BeforeEach
     void setUp() {

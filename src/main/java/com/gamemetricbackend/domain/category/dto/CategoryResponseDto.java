@@ -1,4 +1,4 @@
-package com.gamemetricbackend.domain.catagory.dto;
+package com.gamemetricbackend.domain.category.dto;
 
 import lombok.Getter;
 
