@@ -1,7 +1,5 @@
-package com.gamemetricbackend.domain.catagory.entity;
+package com.gamemetricbackend.domain.category.entity;
 
-import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
-import com.gamemetricbackend.domain.broadcast.entitiy.BroadcastStatus;
 import com.gamemetricbackend.global.entity.TimeStamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

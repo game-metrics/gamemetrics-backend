@@ -1,8 +1,8 @@
-package com.gamemetricbackend.domain.catagory.controller;
+package com.gamemetricbackend.domain.category.controller;
 
-import com.gamemetricbackend.domain.catagory.dto.CategoryCreationDto;
-import com.gamemetricbackend.domain.catagory.dto.CategoryResponseDto;
-import com.gamemetricbackend.domain.catagory.service.CatagoryService;
+import com.gamemetricbackend.domain.category.dto.CategoryCreationDto;
+import com.gamemetricbackend.domain.category.dto.CategoryResponseDto;
+import com.gamemetricbackend.domain.category.service.CategoryService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +20,19 @@ import java.util.List;
 @Controller
 @RequestMapping("/category")
 @RequiredArgsConstructor
-public class CatagoryController {
-    private final CatagoryService catagoryService;
+public class CategoryController {
+    private final CategoryService categoryService;
     @PostMapping
     public ResponseEntity<ResponseDto<Boolean>> createCategory(
         @AuthenticationPrincipal UserDetailsImpl userDetails
         ,@RequestBody CategoryCreationDto catagoryCreationDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(
-            catagoryService.create(catagoryCreationDto,userDetails.getRole())));
+            categoryService.create(catagoryCreationDto,userDetails.getRole())));
     }
 
     @GetMapping
     public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> getCategoryList(){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(
-            catagoryService.getCategoryList()));
+            categoryService.getCategoryList()));
     }
 }

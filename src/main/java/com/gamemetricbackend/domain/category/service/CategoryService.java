@@ -1,10 +1,10 @@
-package com.gamemetricbackend.domain.catagory.service;
+package com.gamemetricbackend.domain.category.service;
 
 import com.esotericsoftware.minlog.Log;
-import com.gamemetricbackend.domain.catagory.dto.CategoryCreationDto;
-import com.gamemetricbackend.domain.catagory.dto.CategoryResponseDto;
-import com.gamemetricbackend.domain.catagory.entity.Category;
-import com.gamemetricbackend.domain.catagory.repository.CategoryRepository;
+import com.gamemetricbackend.domain.category.dto.CategoryCreationDto;
+import com.gamemetricbackend.domain.category.dto.CategoryResponseDto;
+import com.gamemetricbackend.domain.category.entity.Category;
+import com.gamemetricbackend.domain.category.repository.CategoryRepository;
 import com.gamemetricbackend.domain.user.entitiy.UserRoleEnum;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CatagoryService {
+public class CategoryService {
 
     private final CategoryRepository catagoryRepository;
     public Boolean create(CategoryCreationDto categoryCreationDto, UserRoleEnum role) {
