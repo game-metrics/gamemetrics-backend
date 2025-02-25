@@ -11,16 +11,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BroadcastService {
-    Optional<Broadcast> findById(Long id);
 
     Page<BroadCastResponseDto> findByTitle(String title, Pageable pageable);
 
-    Broadcast createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto);
+    BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto);
 
-    Broadcast updateBroadcast(Long userId, UpdateBroadcastDto updateBroadcastDto)
+    BroadCastResponseDto updateBroadcast(Long userId, UpdateBroadcastDto updateBroadcastDto)
         throws UserNotMatchException;
 
-    Broadcast OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
+    BroadCastResponseDto OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
         throws UserNotMatchException;
 
     Page<BroadCastResponseDto> getBroadcastList(Pageable pageable);

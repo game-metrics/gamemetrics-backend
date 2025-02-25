@@ -14,9 +14,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "broadcast")
 @NoArgsConstructor
 public class Broadcast extends TimeStamped {
@@ -40,13 +42,13 @@ public class Broadcast extends TimeStamped {
     private String thumbNailUrl;
 
     @Column
-    private Long catagoryId;
+    private Long categoryId;
 
     public Broadcast(Long userId,BroadcastCreationDto broadcastCreationDto) {
         this.title = broadcastCreationDto.getTitle();
         this.thumbNailUrl = broadcastCreationDto.getThumbNailUrl();
         this.userId = userId;
-        this.catagoryId = broadcastCreationDto.getCatagoryId();
+        this.categoryId = broadcastCreationDto.getCatagoryId();
         this.broadcastStatus = BroadcastStatus.ONAIR;
     }
 

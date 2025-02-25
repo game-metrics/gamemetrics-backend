@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BroadcastServiceImpl implements BroadcastService{
     private final BroadcastRepository broadcastRepository;
 
-    public Optional<Broadcast> findById(Long id){
+    private Optional<Broadcast> findById(Long id){
         return broadcastRepository.findById(id);
     }
 
@@ -30,32 +30,30 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public Broadcast createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto) {
-        Broadcast broadcast = new Broadcast(userid,broadcastCreationDto);
-        return broadcastRepository.save(broadcast);
+    public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto) {
+        return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto)));
     }
 
     @Override
     @Transactional
-    public Broadcast updateBroadcast(Long userId, UpdateBroadcastDto updateBroadcastDto)
+    public BroadCastResponseDto updateBroadcast(Long userId, UpdateBroadcastDto updateBroadcastDto)
         throws UserNotMatchException {
         Broadcast broadcast = findById(updateBroadcastDto.getBroadCastId()).orElseThrow(() -> new NoSuchElementException("the broadcast is not findable"));
         broadcast.update(userId,updateBroadcastDto);
-        return broadcast;
+        return new BroadCastResponseDto(broadcast);
     }
 
     @Override
     @Transactional
-    public Broadcast OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
+    public BroadCastResponseDto OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
         throws UserNotMatchException,NoSuchElementException {
         Broadcast broadcast = findById(offAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
         broadcast.turnOffAir(userId);
-        return broadcast;
+        return new BroadCastResponseDto(broadcast);
     }
 
     @Override
     public Page<BroadCastResponseDto> getBroadcastList(Pageable pageable) {
         return broadcastRepository.getBroadcastPage(pageable);
-
     }
 }
