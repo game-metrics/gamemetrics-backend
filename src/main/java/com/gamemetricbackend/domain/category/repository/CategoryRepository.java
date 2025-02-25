@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT new com.gamemetricbackend.domain.category.dto.CategoryResponseDto(c.id, c.category) FROM Category c")
-    List<CategoryResponseDto> getAllCatagory();
+    List<CategoryResponseDto> getAllCategory();
 }
