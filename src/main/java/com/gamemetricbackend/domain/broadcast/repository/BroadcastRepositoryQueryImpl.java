@@ -44,7 +44,7 @@ public class BroadcastRepositoryQueryImpl implements BroadcastRepositoryQuery{
         BooleanExpression predicate =qBroadcast.broadcastStatus.eq(BroadcastStatus.ONAIR); // containsIgnoreCase for case-insensitive search
 
         QueryResults<BroadCastResponseDto> results = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(BroadCastResponseDto.class, qBroadcast.id, qBroadcast.title,qBroadcast.thumbNailUrl,qBroadcast.catagoryId))
+            .select(Projections.fields(BroadCastResponseDto.class, qBroadcast.id, qBroadcast.title,qBroadcast.thumbNailUrl,qBroadcast.categoryId))
             .from(qBroadcast)
             .where(predicate)
             .offset(pageable.getOffset())
