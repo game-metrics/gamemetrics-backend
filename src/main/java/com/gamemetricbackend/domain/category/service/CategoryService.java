@@ -32,6 +32,6 @@ public class CategoryService {
     }
 
     public List<CategoryResponseDto> getCategoryList() {
-        return catagoryRepository.getAllCatagory();
+        return catagoryRepository.getAllCategory();
     }
 }
