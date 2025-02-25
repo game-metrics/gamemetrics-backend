@@ -35,7 +35,7 @@ public class BroadcastController {
     private final BroadcastService broadcastService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<Broadcast>> createBroadcast(
+    public ResponseEntity<ResponseDto<BroadCastResponseDto>> createBroadcast(
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ,@RequestBody BroadcastCreationDto broadcastCreationDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.createBroadcast(userDetails.getId(),broadcastCreationDto)));
@@ -55,14 +55,14 @@ public class BroadcastController {
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto<Broadcast>> updateBroadcast(
+    public ResponseEntity<ResponseDto<BroadCastResponseDto>> updateBroadcast(
         @AuthenticationPrincipal UserDetailsImpl userDetails
         ,@RequestBody UpdateBroadcastDto updateBroadcastDto) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.updateBroadcast(userDetails.getId(),updateBroadcastDto)));
     }
 
     @PatchMapping
-    public ResponseEntity<ResponseDto<Broadcast>> OffAirBroadcast(
+    public ResponseEntity<ResponseDto<BroadCastResponseDto>> OffAirBroadcast(
         @AuthenticationPrincipal UserDetailsImpl userDetails
         ,@RequestBody OffAirRequestDto offAirRequestDto) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.OffAirBroadcast(userDetails.getId(),offAirRequestDto)));
