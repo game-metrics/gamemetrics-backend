@@ -81,7 +81,7 @@ class CategoryServiceTest {
         CategoryResponseDto catagoryResponseDto2 = new CategoryResponseDto(11L,"Category2");
         List<CategoryResponseDto> expectedList = Arrays.asList(catagoryResponseDto1, catagoryResponseDto2);
 
-        when(categoryRepository.getAllCatagory()).thenReturn(expectedList);
+        when(categoryRepository.getAllCategory()).thenReturn(expectedList);
 
         // Act
         List<CategoryResponseDto> result = categoryService.getCategoryList();
