@@ -36,7 +36,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         Map<String, Object> data = mapper.readValue(payload, HashMap.class);
         String type = (String) data.get("type");
 
-        if ("chat".equals(type)||"join".equals(type)) {
+        if ("JOIN".equals(type)||"TALK".equals(type)) {
             // 채팅 메시지 처리
             ChatMessageDto chatMessageDto = mapper.convertValue(data, ChatMessageDto.class);
             handleChatMessage(session, chatMessageDto);
