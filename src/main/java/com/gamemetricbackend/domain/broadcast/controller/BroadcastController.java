@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/broadcasts")
@@ -37,9 +39,10 @@ public class BroadcastController {
     @PostMapping
     public ResponseEntity<ResponseDto<BroadCastResponseDto>> createBroadcast(
             @AuthenticationPrincipal UserDetailsImpl userDetails
-            ,@RequestBody BroadcastCreationDto broadcastCreationDto){
+            ,@RequestBody BroadcastCreationDto broadcastCreationDto
+    ) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.createBroadcast(userDetails.getId(),broadcastCreationDto)));
-    }
+}
 
     @Operation(summary = "방송 검색", description = "방송를 검색한다.")
     @GetMapping("/search")

@@ -7,8 +7,12 @@ import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.repository.BroadcastRepository;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
+
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import com.gamemetricbackend.global.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class BroadcastServiceImpl implements BroadcastService{
+
+//    private S3Service s3Service;
     private final BroadcastRepository broadcastRepository;
 
     private Optional<Broadcast> findById(Long id){
@@ -30,8 +36,14 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto) {
-        return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto)));
+    public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto)  {
+        String thunbNail = "";
+//        try {
+//            thunbNail = s3Service.uploadFile(broadcastCreationDto.getThumbNail());
+//        }catch (IOException e){
+//            throw new RuntimeException("썸네일 업로드 실패", e);
+//        }
+        return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto,thunbNail)));
     }
 
     @Override
