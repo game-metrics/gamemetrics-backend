@@ -37,8 +37,7 @@ public class Broadcast extends TimeStamped {
     @Enumerated(EnumType.STRING)
     BroadcastStatus broadcastStatus;
 
-    // todo thumbnails will be saved on s3? or somewhere better.
-    @Column(nullable = false)
+    @Column
     private String thumbNailUrl;
 
     @Column
@@ -48,7 +47,7 @@ public class Broadcast extends TimeStamped {
         this.title = broadcastCreationDto.getTitle();
         this.userId = userId;
         this.categoryId = broadcastCreationDto.getCatagoryId();
-        this.thumbNailUrl = broadcastCreationDto.getThumbNail();
+        this.thumbNailUrl = broadcastCreationDto.getThumbNailUrl();
         this.broadcastStatus = BroadcastStatus.ONAIR;
     }
 

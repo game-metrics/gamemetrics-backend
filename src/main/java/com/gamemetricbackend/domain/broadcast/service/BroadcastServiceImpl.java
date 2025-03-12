@@ -37,8 +37,6 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     @Override
     public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto)  {
-        String thunbNail = "";
-
         return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto)));
     }
 

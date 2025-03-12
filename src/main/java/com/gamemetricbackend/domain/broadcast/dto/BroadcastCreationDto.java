@@ -8,6 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class BroadcastCreationDto {
     String title;
-    String thumbNail;
+    String thumbNailUrl;
     Long catagoryId;
 }
