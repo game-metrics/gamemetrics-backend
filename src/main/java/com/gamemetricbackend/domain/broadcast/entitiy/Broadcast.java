@@ -44,12 +44,11 @@ public class Broadcast extends TimeStamped {
     @Column
     private Long categoryId;
 
-    public Broadcast(Long userId,BroadcastCreationDto broadcastCreationDto,String thumbNailUrl) {
+    public Broadcast(Long userId,BroadcastCreationDto broadcastCreationDto) {
         this.title = broadcastCreationDto.getTitle();
         this.userId = userId;
         this.categoryId = broadcastCreationDto.getCatagoryId();
-
-        this.thumbNailUrl = thumbNailUrl;
+        this.thumbNailUrl = broadcastCreationDto.getThumbNail();
         this.broadcastStatus = BroadcastStatus.ONAIR;
     }
 

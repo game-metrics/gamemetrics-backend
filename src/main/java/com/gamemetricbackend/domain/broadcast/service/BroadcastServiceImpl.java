@@ -38,12 +38,8 @@ public class BroadcastServiceImpl implements BroadcastService{
     @Override
     public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto)  {
         String thunbNail = "";
-//        try {
-//            thunbNail = s3Service.uploadFile(broadcastCreationDto.getThumbNail());
-//        }catch (IOException e){
-//            throw new RuntimeException("썸네일 업로드 실패", e);
-//        }
-        return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto,thunbNail)));
+
+        return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto)));
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BroadcastService {
 
