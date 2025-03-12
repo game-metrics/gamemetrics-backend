@@ -74,6 +74,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/ws/**").permitAll() // 임시 websocket 테스트용
                 .requestMatchers(HttpMethod.GET,"/catagory").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/s3/**").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
