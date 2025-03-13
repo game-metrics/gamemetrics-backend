@@ -46,7 +46,7 @@ public class Broadcast extends TimeStamped {
     public Broadcast(Long userId,BroadcastCreationDto broadcastCreationDto) {
         this.title = broadcastCreationDto.getTitle();
         this.userId = userId;
-        this.categoryId = broadcastCreationDto.getCatagoryId();
+        this.categoryId = broadcastCreationDto.getCategoryId();
         this.thumbNailUrl = broadcastCreationDto.getThumbNailUrl();
         this.broadcastStatus = BroadcastStatus.ONAIR;
     }

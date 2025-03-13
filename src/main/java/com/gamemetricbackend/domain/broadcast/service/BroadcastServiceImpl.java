@@ -8,11 +8,9 @@ import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.repository.BroadcastRepository;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.gamemetricbackend.global.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BroadcastServiceImpl implements BroadcastService{
 
-//    private S3Service s3Service;
     private final BroadcastRepository broadcastRepository;
 
     private Optional<Broadcast> findById(Long id){

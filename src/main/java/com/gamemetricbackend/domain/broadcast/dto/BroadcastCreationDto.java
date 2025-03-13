@@ -9,5 +9,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class BroadcastCreationDto {
     String title;
     String thumbNailUrl;
-    Long catagoryId;
+    Long categoryId;
 }
