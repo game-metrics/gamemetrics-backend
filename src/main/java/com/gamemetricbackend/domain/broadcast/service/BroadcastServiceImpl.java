@@ -2,7 +2,7 @@ package com.gamemetricbackend.domain.broadcast.service;
 
 import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
-import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
+import com.gamemetricbackend.domain.broadcast.dto.OnOffAirRequestDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.repository.BroadcastRepository;
@@ -48,9 +48,18 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     @Override
     @Transactional
-    public BroadCastResponseDto OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
+    public BroadCastResponseDto OnAirBroadcast(Long userId, OnOffAirRequestDto onOffAirRequestDto)
+            throws UserNotMatchException,NoSuchElementException {
+        Broadcast broadcast = findById(onOffAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+        broadcast.turnOnAir(userId);
+        return new BroadCastResponseDto(broadcast);
+    }
+
+    @Override
+    @Transactional
+    public BroadCastResponseDto OffAirBroadcast(Long userId, OnOffAirRequestDto onOffAirRequestDto)
         throws UserNotMatchException,NoSuchElementException {
-        Broadcast broadcast = findById(offAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+        Broadcast broadcast = findById(onOffAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
         broadcast.turnOffAir(userId);
         return new BroadCastResponseDto(broadcast);
     }

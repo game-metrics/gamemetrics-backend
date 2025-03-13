@@ -48,7 +48,7 @@ public class Broadcast extends TimeStamped {
         this.userId = userId;
         this.categoryId = broadcastCreationDto.getCategoryId();
         this.thumbNailUrl = broadcastCreationDto.getThumbNailUrl();
-        this.broadcastStatus = BroadcastStatus.ONAIR;
+        this.broadcastStatus = BroadcastStatus.OFFAIR;
     }
 
     public void update(Long userId,UpdateBroadcastDto updateBroadcastDto)
@@ -56,6 +56,16 @@ public class Broadcast extends TimeStamped {
         if(this.userId.equals(userId)){
             this.title = updateBroadcastDto.getTitle();
             this.thumbNailUrl = updateBroadcastDto.getThumbNail();
+        }
+        else {
+            throw new UserNotMatchException();
+        }
+    }
+
+    public void turnOnAir(Long userId)
+            throws UserNotMatchException {
+        if(this.userId.equals(userId)){
+            this.broadcastStatus = BroadcastStatus.ONAIR;
         }
         else {
             throw new UserNotMatchException();

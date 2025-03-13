@@ -3,6 +3,6 @@ package com.gamemetricbackend.domain.broadcast.dto;
 import lombok.Getter;
 
 @Getter
-public class OffAirRequestDto {
+public class OnOffAirRequestDto {
     Long broadcastId;
 }

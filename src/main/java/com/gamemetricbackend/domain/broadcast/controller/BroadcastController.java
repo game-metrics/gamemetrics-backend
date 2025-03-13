@@ -2,15 +2,13 @@ package com.gamemetricbackend.domain.broadcast.controller;
 
 import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
-import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
+import com.gamemetricbackend.domain.broadcast.dto.OnOffAirRequestDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
-import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.service.BroadcastService;
 import com.gamemetricbackend.global.aop.dto.ResponseDto;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,10 +62,17 @@ public class BroadcastController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.updateBroadcast(userDetails.getId(),updateBroadcastDto)));
     }
 
-    @PatchMapping
+    @PatchMapping("/on")
+    public ResponseEntity<ResponseDto<BroadCastResponseDto>> OnAirBroadcast(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+            ,@RequestBody OnOffAirRequestDto onOffAirRequestDto) throws UserNotMatchException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.OnAirBroadcast(userDetails.getId(),onOffAirRequestDto)));
+    }
+
+    @PatchMapping("/off")
     public ResponseEntity<ResponseDto<BroadCastResponseDto>> OffAirBroadcast(
         @AuthenticationPrincipal UserDetailsImpl userDetails
-        ,@RequestBody OffAirRequestDto offAirRequestDto) throws UserNotMatchException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.OffAirBroadcast(userDetails.getId(),offAirRequestDto)));
+        ,@RequestBody OnOffAirRequestDto onOffAirRequestDto) throws UserNotMatchException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.OffAirBroadcast(userDetails.getId(),onOffAirRequestDto)));
     }
 }
