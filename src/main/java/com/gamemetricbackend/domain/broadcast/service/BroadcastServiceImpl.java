@@ -2,13 +2,15 @@ package com.gamemetricbackend.domain.broadcast.service;
 
 import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
-import com.gamemetricbackend.domain.broadcast.dto.OffAirRequestDto;
+import com.gamemetricbackend.domain.broadcast.dto.OnOffAirRequestDto;
 import com.gamemetricbackend.domain.broadcast.dto.UpdateBroadcastDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.repository.BroadcastRepository;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
+
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class BroadcastServiceImpl implements BroadcastService{
+
     private final BroadcastRepository broadcastRepository;
 
     private Optional<Broadcast> findById(Long id){
@@ -30,7 +33,7 @@ public class BroadcastServiceImpl implements BroadcastService{
     }
 
     @Override
-    public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto) {
+    public BroadCastResponseDto createBroadcast(Long userid, BroadcastCreationDto broadcastCreationDto)  {
         return new BroadCastResponseDto(broadcastRepository.save(new Broadcast(userid,broadcastCreationDto)));
     }
 
@@ -45,9 +48,18 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     @Override
     @Transactional
-    public BroadCastResponseDto OffAirBroadcast(Long userId, OffAirRequestDto offAirRequestDto)
+    public BroadCastResponseDto OnAirBroadcast(Long userId, OnOffAirRequestDto onOffAirRequestDto)
+            throws UserNotMatchException,NoSuchElementException {
+        Broadcast broadcast = findById(onOffAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+        broadcast.turnOnAir(userId);
+        return new BroadCastResponseDto(broadcast);
+    }
+
+    @Override
+    @Transactional
+    public BroadCastResponseDto OffAirBroadcast(Long userId, OnOffAirRequestDto onOffAirRequestDto)
         throws UserNotMatchException,NoSuchElementException {
-        Broadcast broadcast = findById(offAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+        Broadcast broadcast = findById(onOffAirRequestDto.getBroadcastId()).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
         broadcast.turnOffAir(userId);
         return new BroadCastResponseDto(broadcast);
     }
