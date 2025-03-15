@@ -32,7 +32,6 @@ public class BroadcastServiceImpl implements BroadcastService{
 
     private final BroadcastRepository broadcastRepository;
 
-
     private Optional<Broadcast> findById(Long id){
         return broadcastRepository.findById(id);
     }
