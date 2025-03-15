@@ -1,7 +1,6 @@
 package com.gamemetricbackend.domain.broadcast.repository;
 
 import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
-import com.gamemetricbackend.domain.broadcast.dto.BroadcastCreationDto;
 import com.gamemetricbackend.domain.broadcast.entitiy.BroadcastStatus;
 import com.gamemetricbackend.domain.broadcast.entitiy.QBroadcast;
 import com.gamemetricbackend.global.config.QuerydslConfig;

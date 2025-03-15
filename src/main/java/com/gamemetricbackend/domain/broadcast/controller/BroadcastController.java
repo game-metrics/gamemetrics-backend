@@ -75,4 +75,11 @@ public class BroadcastController {
         ,@RequestBody OnOffAirRequestDto onOffAirRequestDto) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.OffAirBroadcast(userDetails.getId(),onOffAirRequestDto)));
     }
+
+    // 방송이 송출 중단인지. 검증.
+    @GetMapping("/confirm")
+    public ResponseEntity<ResponseDto<Boolean>> ConfirmBroadcast(
+            @RequestParam(name ="broadcastId") Long broadcastId){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.success(broadcastService.ConfirmBroadcast(broadcastId)));
+    }
 }

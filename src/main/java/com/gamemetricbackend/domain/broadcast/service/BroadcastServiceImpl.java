@@ -8,18 +8,27 @@ import com.gamemetricbackend.domain.broadcast.entitiy.Broadcast;
 import com.gamemetricbackend.domain.broadcast.repository.BroadcastRepository;
 import com.gamemetricbackend.global.exception.UserNotMatchException;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class BroadcastServiceImpl implements BroadcastService{
+
+    @Value("${hls.url}")
+    private String hlsUrl;
 
     private final BroadcastRepository broadcastRepository;
 
@@ -67,5 +76,36 @@ public class BroadcastServiceImpl implements BroadcastService{
     @Override
     public Page<BroadCastResponseDto> getBroadcastList(Pageable pageable) {
         return broadcastRepository.getBroadcastPage(pageable);
+    }
+
+    //
+    @Override
+    @Transactional
+    public Boolean ConfirmBroadcast(Long broadcastId) {
+
+        String url = hlsUrl + broadcastId + ".m3u8";
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("HEAD"); // 실제 데이터 다운로드 없이 존재 여부만 확인
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode == 200) {
+                // HLS 스트림이 존재하므로 방송은 여전히 켜져 있음
+                return false;
+            } else {
+                // 방송이 꺼진 상태로 간주
+                log.error("방송 종료 확인 완료");
+                Broadcast broadcast = findById(broadcastId).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+                broadcast.turnOffAirForce();
+                return true;
+            }
+        } catch (IOException e) {
+            log.error("서버연결 문제");
+            Broadcast broadcast = findById(broadcastId).orElseThrow(()-> new NoSuchElementException("can not find the broadcast"));
+            broadcast.turnOffAirForce();
+
+            return true;
+        }
     }
 }

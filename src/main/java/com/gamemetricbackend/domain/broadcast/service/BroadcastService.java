@@ -26,4 +26,6 @@ public interface BroadcastService {
         throws UserNotMatchException;
 
     Page<BroadCastResponseDto> getBroadcastList(Pageable pageable);
+
+    Boolean ConfirmBroadcast(Long broadcastId);
 }
