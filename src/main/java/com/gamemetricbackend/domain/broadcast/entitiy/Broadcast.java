@@ -81,4 +81,8 @@ public class Broadcast extends TimeStamped {
             throw new UserNotMatchException();
         }
     }
+
+    public void turnOffAirForce(){
+            this.broadcastStatus = BroadcastStatus.OFFAIR;
+    }
 }
