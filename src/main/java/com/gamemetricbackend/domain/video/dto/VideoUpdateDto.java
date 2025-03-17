@@ -1,9 +1,10 @@
 package com.gamemetricbackend.domain.video.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class VideoUpdateDto {
     String title;
     String thumbNailUrl;

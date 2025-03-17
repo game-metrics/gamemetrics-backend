@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Table(name = "video")
@@ -40,7 +42,7 @@ public class Video extends TimeStamped {
     }
 
     public void update(Long userid, VideoUpdateDto videoUpdateDto) throws UserNotMatchException {
-        if(this.userId != userid){
+        if(!Objects.equals(this.userId, userid)){
             throw new UserNotMatchException("User does not have permission");
         }
         this.title = videoUpdateDto.getTitle();

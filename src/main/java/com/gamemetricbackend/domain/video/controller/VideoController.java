@@ -54,7 +54,7 @@ public class VideoController {
     public ResponseEntity<ResponseDto<VideoResponseDto>> UpdateVideo(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody VideoUpdateDto videoUpdateDto,
-            @PathVariable Long videoId
+            @PathVariable(name = "videoId") Long videoId
     ) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseDto.success(videoService.UpdateVideo(userDetails.getId(), videoUpdateDto, videoId)));
@@ -71,7 +71,7 @@ public class VideoController {
     @DeleteMapping("/{videoId}")
     public ResponseEntity<ResponseDto<Boolean>> DeleteVideo(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PathVariable Long videoId
+            @PathVariable(name = "videoId") Long videoId
     ) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseDto.success(videoService.deleteVideo(userDetails.getId(), videoId)));
