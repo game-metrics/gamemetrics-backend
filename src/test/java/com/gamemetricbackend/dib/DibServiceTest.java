@@ -1,4 +1,4 @@
-package com.gamemetricbackend.dib.serviceTest;
+package com.gamemetricbackend.dib;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
