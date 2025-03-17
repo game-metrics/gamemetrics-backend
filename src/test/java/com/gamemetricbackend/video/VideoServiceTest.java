@@ -36,7 +36,7 @@ class VideoServiceTest {
         when(videoRepository.save(any(Video.class))).thenReturn(savedVideo);
 
         // Act
-        VideoResponseDto response = videoService.CreateVideo(userId, dto);
+        VideoResponseDto response = videoService.createVideo(userId, dto);
 
         // Assert
         assertThat(response.getTitle()).isEqualTo("Test Title");
@@ -54,7 +54,7 @@ class VideoServiceTest {
         when(videoRepository.findById(videoId)).thenReturn(Optional.of(video));
 
         // Act
-        VideoResponseDto response = videoService.UpdateVideo(userId, updateDto, videoId);
+        VideoResponseDto response = videoService.updateVideo(userId, updateDto, videoId);
 
         // Assert
         assertThat(response.getTitle()).isEqualTo("Updated Title");
@@ -73,7 +73,7 @@ class VideoServiceTest {
         when(videoRepository.findById(videoId)).thenReturn(Optional.of(video));
 
         // Act & Assert
-        assertThatThrownBy(() -> videoService.UpdateVideo(userId, updateDto, videoId))
+        assertThatThrownBy(() -> videoService.updateVideo(userId, updateDto, videoId))
                 .isInstanceOf(UserNotMatchException.class)
                 .hasMessageContaining("User does not have permission");
     }
