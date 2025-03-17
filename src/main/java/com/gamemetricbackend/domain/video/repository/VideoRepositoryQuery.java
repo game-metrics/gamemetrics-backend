@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface VideoRepositoryQuery {
-    Page<VideoResponseDto> findByTitle(String title, Pageable pageable);
 
-    Page<VideoResponseDto> getBroadcastPage(Pageable pageable);
+    Page<VideoResponseDto> getVideoPage(Pageable pageable);
 }

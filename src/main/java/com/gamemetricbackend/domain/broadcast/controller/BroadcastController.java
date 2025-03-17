@@ -125,7 +125,7 @@ public class BroadcastController {
     }
 
     /**
-     * 방송이 송출 중인지 확인합니다.
+     * 방송이 송출 중인지 확인합니다. 방송이 송출이 종료 되었으면 broadcast -> off air 합니다.
      *
      * @param broadcastId 방송 ID
      * @return 방송 송출 여부 (true = 송출 중, false = 송출 아님)

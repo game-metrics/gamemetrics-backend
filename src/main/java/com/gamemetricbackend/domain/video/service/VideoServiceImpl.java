@@ -52,6 +52,6 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Page<VideoResponseDto> getVideoPage(Pageable pageable) {
-        return null;
+        return videoRepository.getVideoPage(pageable);
     }
 }
