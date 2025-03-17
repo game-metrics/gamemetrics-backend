@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * 영상 관련 기능을 처리하는 컨트롤러 클래스입니다.
  * 영상 생성, 수정, 삭제 기능을 제공합니다.
  */
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/videos")
 public class VideoController {
