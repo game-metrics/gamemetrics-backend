@@ -23,14 +23,14 @@ public class VideoServiceImpl implements VideoService {
     private final VideoRepository videoRepository;
 
     @Override
-    public VideoResponseDto CreateVideo(Long id, VideoCreationDto videoCreationDto) {
+    public VideoResponseDto createVideo(Long id, VideoCreationDto videoCreationDto) {
 
         return new VideoResponseDto(videoRepository.save(new Video(id,videoCreationDto)));
     }
 
     @Override
     @Transactional
-    public VideoResponseDto UpdateVideo(Long userid, VideoUpdateDto videoUpdateDto, Long videoId) throws UserNotMatchException {
+    public VideoResponseDto updateVideo(Long userid, VideoUpdateDto videoUpdateDto, Long videoId) throws UserNotMatchException {
         Video video = videoRepository.findById(videoId).orElseThrow(NoSuchFieldError::new);
         video.update(userid,videoUpdateDto);
         return new VideoResponseDto(video);

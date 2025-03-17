@@ -14,9 +14,9 @@ import java.io.IOException;
 public interface VideoService {
 
 
-    VideoResponseDto CreateVideo(Long userId, VideoCreationDto videoCreationDto);
+    VideoResponseDto createVideo(Long userId, VideoCreationDto videoCreationDto);
 
-    VideoResponseDto UpdateVideo(Long userId, VideoUpdateDto videoUpdateDto,Long videoId) throws UserNotMatchException;
+    VideoResponseDto updateVideo(Long userId, VideoUpdateDto videoUpdateDto,Long videoId) throws UserNotMatchException;
 
     Boolean deleteVideo(Long userId, Long videoId) throws UserNotMatchException;
 

@@ -42,7 +42,7 @@ public class VideoController {
             @RequestBody VideoCreationDto videoCreationDto
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.CreateVideo(userDetails.getId(), videoCreationDto)));
+                .body(ResponseDto.success(videoService.createVideo(userDetails.getId(), videoCreationDto)));
     }
 
     /**
@@ -61,7 +61,7 @@ public class VideoController {
             @PathVariable(name = "videoId") Long videoId
     ) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.UpdateVideo(userDetails.getId(), videoUpdateDto, videoId)));
+                .body(ResponseDto.success(videoService.updateVideo(userDetails.getId(), videoUpdateDto, videoId)));
     }
 
     /**
