@@ -1,7 +1,6 @@
 package com.gamemetricbackend.domain.video.service;
 
 
-import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.video.dto.VideoCreationDto;
 import com.gamemetricbackend.domain.video.dto.VideoResponseDto;
 import com.gamemetricbackend.domain.video.dto.VideoUpdateDto;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 
 public interface VideoService {
-
 
     VideoResponseDto createVideo(Long userId, VideoCreationDto videoCreationDto);
 

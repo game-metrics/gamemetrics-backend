@@ -1,6 +1,5 @@
 package com.gamemetricbackend.domain.video.controller;
 
-import com.gamemetricbackend.domain.broadcast.dto.BroadCastResponseDto;
 import com.gamemetricbackend.domain.video.dto.VideoCreationDto;
 import com.gamemetricbackend.domain.video.dto.VideoResponseDto;
 import com.gamemetricbackend.domain.video.dto.VideoUpdateDto;
@@ -15,7 +14,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
