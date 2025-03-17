@@ -123,7 +123,7 @@ public class BroadcastServiceImpl implements BroadcastService {
      * @return 방송 리스트 (페이지 형식)
      */
     @Override
-    public Page<BroadCastResponseDto> getBroadcastList(Pageable pageable) {
+    public Page<BroadCastResponseDto> getBroadcastPage(Pageable pageable) {
         return broadcastRepository.getBroadcastPage(pageable);
     }
 
