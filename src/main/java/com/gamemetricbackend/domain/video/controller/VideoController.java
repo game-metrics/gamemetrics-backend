@@ -84,4 +84,10 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseDto.success(videoService.getVideoPage(pageable)));
     }
+
+    @GetMapping("/{videoId}")
+    public ResponseEntity<ResponseDto<VideoResponseDto>> getBroadcast(@PathVariable Long videoId) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ResponseDto.success(videoService.getVideo(videoId)));
+    }
 }

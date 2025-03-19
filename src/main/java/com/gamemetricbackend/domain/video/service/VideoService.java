@@ -19,4 +19,6 @@ public interface VideoService {
     Boolean deleteVideo(Long userId, Long videoId) throws UserNotMatchException;
 
     Page<VideoResponseDto> getVideoPage(Pageable pageable);
+
+    VideoResponseDto getVideo(Long videoId);
 }
