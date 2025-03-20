@@ -28,9 +28,27 @@ public class S3Controller {
      * @return 업로드된 이미지의 URL을 포함하는 JSON 응답
      */
     @PostMapping("/image")
-    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             String fileUrl = s3Service.uploadFile(file);
+
+            // JSON 형식의 응답 생성
+            Map<String, String> response = new HashMap<>();
+            response.put("url", fileUrl);
+
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "파일 업로드 실패: " + e.getMessage());
+
+            return ResponseEntity.status(500).body(errorResponse);
+        }
+    }
+
+    @PostMapping("/video")
+    public ResponseEntity<Map<String, String>> uploadVideo(@RequestParam("file") MultipartFile file) {
+        try {
+            String fileUrl = s3Service.uploadVideo(file);
 
             // JSON 형식의 응답 생성
             Map<String, String> response = new HashMap<>();

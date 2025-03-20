@@ -27,7 +27,7 @@ public class VideoRepositoryQueryImpl implements VideoRepositoryQuery {
     public Page<VideoResponseDto> getVideoPage(Pageable pageable) {
 
         QueryResults<VideoResponseDto> results = querydslConfig.jpaQueryFactory()
-                .select(Projections.fields(VideoResponseDto.class, qVideo.id, qVideo.title,qVideo.thumbNailUrl,qVideo.videoUrl))
+                .select(Projections.fields(VideoResponseDto.class, qVideo.id, qVideo.title,qVideo.thumbNailUrl))
                 .from(qVideo)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
