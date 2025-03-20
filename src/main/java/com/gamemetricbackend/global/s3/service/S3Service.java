@@ -33,4 +33,18 @@ public class S3Service {
 
         return "https://" + bucketName + ".s3.amazonaws.com/" + fileName;
     }
+
+    public String uploadVideo(MultipartFile file) throws IOException {
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+
+        s3Client.putObject(
+                PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key("video/"+fileName)
+                        .build(),
+                RequestBody.fromBytes(file.getBytes())
+        );
+
+        return "https://" + bucketName + ".s3.amazonaws.com/video/" + fileName;
+    }
 }
