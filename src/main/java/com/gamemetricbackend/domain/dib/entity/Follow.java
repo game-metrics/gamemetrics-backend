@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @Table(indexes = {@Index(name = "dib_index",columnList = "follower_Id,streamer_name")})
-public class Dib {
+public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,17 +27,8 @@ public class Dib {
     @Column(name = "streamer_name", nullable = false)
     private String streamerName;
 
-    @Column(name = "dib_status")
-    private Boolean status;
-
-    public Dib(Long userid, String streamerName) {
+    public Follow(Long userid, String streamerName) {
         this.followerId=userid;
         this.streamerName=streamerName;
-        this.status = true;
-    }
-
-    public void updateStatus(){
-        if(status == true) status = false;
-        else status = true;
     }
 }

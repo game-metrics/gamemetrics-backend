@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dibs")
-public class DibController {
+@RequestMapping("/follows")
+public class FollowController {
     private final DibService dibService;
 
     @PutMapping

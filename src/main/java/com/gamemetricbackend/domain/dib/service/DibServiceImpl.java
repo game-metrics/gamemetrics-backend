@@ -1,6 +1,6 @@
 package com.gamemetricbackend.domain.dib.service;
 
-import com.gamemetricbackend.domain.dib.entity.Dib;
+import com.gamemetricbackend.domain.dib.entity.Follow;
 import com.gamemetricbackend.domain.dib.repository.DibRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -16,20 +16,19 @@ public class DibServiceImpl implements DibService{
     @Override
     @Transactional
     public Boolean upateDib(Long userid, String streamerName) {
-        Dib dib;
         try {
-            dib = dibRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElseThrow(NoSuchElementException::new);
+            dibRepository.delete(dibRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElseThrow(NoSuchElementException::new));
         }catch (NoSuchElementException exception){
-            dib = createNewDib(userid,streamerName);
+            createNewDib(userid,streamerName);
         }
-        dib.updateStatus();
-        return dib.getStatus();
+        return Boolean.TRUE;
     }
 
-    private Dib createNewDib(Long userid, String streamerName){
-        Dib dib = new Dib(userid,streamerName);
+
+
+    private Follow createNewDib(Long userid, String streamerName){
+        Follow dib = new Follow(userid,streamerName);
         dibRepository.save(dib);
-        dib.updateStatus();
         return dib;
     }
 }

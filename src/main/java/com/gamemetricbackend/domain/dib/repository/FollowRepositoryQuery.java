@@ -1,5 +1,5 @@
 package com.gamemetricbackend.domain.dib.repository;
 
-public interface DibsRepositoryQuery {
+public interface FollowRepositoryQuery {
 
 }
