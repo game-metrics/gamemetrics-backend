@@ -19,8 +19,8 @@ public class FollowController {
     private final FollowService followService;
 
     @GetMapping
-    public ResponseEntity<Boolean> upateFollow(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(name = "streamerName") String StreamerName){
-        return ResponseEntity.status(HttpStatus.CREATED).body(followService.upateFollow(userDetails.getId(),StreamerName));
+    public ResponseEntity<Boolean> updateFollow(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(name = "streamerName") String StreamerName){
+        return ResponseEntity.status(HttpStatus.CREATED).body(followService.updateFollow(userDetails.getId(),StreamerName));
     }
 
     // get my dibs

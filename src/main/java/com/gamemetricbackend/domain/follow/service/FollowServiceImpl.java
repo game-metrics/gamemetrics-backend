@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService{
-    private final FollowRepository dibRepository;
+    private final FollowRepository followRepository;
 
     // todo need a better way then using try catch...
     @Override
     @Transactional
-    public Boolean upateFollow(Long userid, String streamerName) {
+    public Boolean updateFollow(Long userid, String streamerName) {
         try {
-            dibRepository.delete(dibRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElseThrow(NoSuchElementException::new));
+            followRepository.delete(followRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElseThrow(NoSuchElementException::new));
         }catch (NoSuchElementException exception){
             createNewDib(userid,streamerName);
         }
@@ -29,7 +29,7 @@ public class FollowServiceImpl implements FollowService{
 
     private Follow createNewDib(Long userid, String streamerName){
         Follow dib = new Follow(userid,streamerName);
-        dibRepository.save(dib);
+        followRepository.save(dib);
         return dib;
     }
 }
