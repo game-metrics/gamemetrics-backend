@@ -20,10 +20,10 @@ import java.util.Optional;
 class DibServiceImplTest {
 
     @Mock
-    private FollowRepository dibRepository;
+    private FollowRepository followRepository;
 
     @InjectMocks
-    private FollowServiceImpl dibService;
+    private FollowServiceImpl followService;
 
     private final Long userId = 1L;
     private final String streamerName = "StreamerA";
@@ -37,28 +37,28 @@ class DibServiceImplTest {
     void updateDib_ShouldUpdateExistingDib() {
         // Given: 기존 Dib 존재
         Follow existingDib = new Follow(userId, streamerName);
-        when(dibRepository.findByFollowerIdAndStreamerName(userId, streamerName))
+        when(followRepository.findByFollowerIdAndStreamerName(userId, streamerName))
                 .thenReturn(Optional.of(existingDib));
 
         // When
-        Boolean status = dibService.upateDib(userId, streamerName);
+        Boolean status = followService.updateFollow(userId, streamerName);
 
         // Then
         assertNotNull(status);
-        verify(dibRepository, never()).save(any(Follow.class)); // 기존 객체만 업데이트
+        verify(followRepository, never()).save(any(Follow.class)); // 기존 객체만 업데이트
     }
 
     @Test
     void updateDib_ShouldCreateNewDibIfNotExist() {
         // Given: 기존 Dib 없음
-        when(dibRepository.findByFollowerIdAndStreamerName(userId, streamerName))
+        when(followRepository.findByFollowerIdAndStreamerName(userId, streamerName))
                 .thenReturn(Optional.empty());
 
         // When
-        Boolean status = dibService.upateDib(userId, streamerName);
+        Boolean status = followService.updateFollow(userId, streamerName);
 
         // Then
         assertNotNull(status);
-        verify(dibRepository).save(any(Follow.class)); // 새로운 객체 저장
+        verify(followRepository).save(any(Follow.class)); // 새로운 객체 저장
     }
 }
