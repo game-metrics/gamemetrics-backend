@@ -16,7 +16,7 @@ public class FollowServiceImpl implements FollowService{
     // todo need a better way then using try catch...
     @Override
     @Transactional
-    public Boolean upateDib(Long userid, String streamerName) {
+    public Boolean upateFollow(Long userid, String streamerName) {
         try {
             dibRepository.delete(dibRepository.findByFollowerIdAndStreamerName(userid,streamerName).orElseThrow(NoSuchElementException::new));
         }catch (NoSuchElementException exception){

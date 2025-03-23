@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class FollowController {
     private final FollowService followService;
 
-    @PutMapping
-    public ResponseEntity<Boolean> upateDib(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(name = "streamerName") String StreamerName){
-        return ResponseEntity.status(HttpStatus.CREATED).body(followService.upateDib(userDetails.getId(),StreamerName));
+    @GetMapping
+    public ResponseEntity<Boolean> upateFollow(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(name = "streamerName") String StreamerName){
+        return ResponseEntity.status(HttpStatus.CREATED).body(followService.upateFollow(userDetails.getId(),StreamerName));
     }
+
+    // get my dibs
+
+    //
+
+
 }
