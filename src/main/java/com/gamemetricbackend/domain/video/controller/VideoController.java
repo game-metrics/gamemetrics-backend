@@ -103,7 +103,12 @@ public class VideoController {
             .body(ResponseDto.success(videoService.getVideo(videoId)));
     }
 
-
+    /**
+     * 개인이 올린 영상 목록을 페이지 형태로 조회하는 API입니다.
+     * @param pageable 페이지 정보(page, size 등)
+     * @param userDetails 로그인한 사용자 정보
+     * @return 영상 리스트(Page 객체)를 포함한 ResponseEntity
+     */
     @GetMapping("/profile")
     public ResponseEntity<ResponseDto<Page<VideoResponseDto>>> GetUserVideo(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
