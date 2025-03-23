@@ -104,7 +104,7 @@ public class VideoController {
     }
 
 
-    @GetMapping
+    @GetMapping("/profile")
     public ResponseEntity<ResponseDto<Page<VideoResponseDto>>> GetUserVideo(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PageableDefault Pageable pageable

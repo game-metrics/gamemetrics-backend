@@ -53,6 +53,5 @@ public class VideoRepositoryQueryImpl implements VideoRepositoryQuery {
         long totalCount = total != null ? total : 0L;
 
         return new PageImpl<>(videoResponseDtos, pageable, totalCount);
-
     }
 }
