@@ -1,4 +1,4 @@
-package com.gamemetricbackend.domain.dib.repository;
+package com.gamemetricbackend.domain.follow.repository;
 
 import com.gamemetricbackend.global.config.QuerydslConfig;
 import lombok.RequiredArgsConstructor;

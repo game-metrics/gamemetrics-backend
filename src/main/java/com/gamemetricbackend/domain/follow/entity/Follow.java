@@ -1,4 +1,4 @@
-package com.gamemetricbackend.domain.dib.entity;
+package com.gamemetricbackend.domain.follow.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

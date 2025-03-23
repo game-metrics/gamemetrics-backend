@@ -3,9 +3,10 @@ package com.gamemetricbackend.dib;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.gamemetricbackend.domain.dib.entity.Dib;
-import com.gamemetricbackend.domain.dib.repository.DibRepository;
-import com.gamemetricbackend.domain.dib.service.DibServiceImpl;
+import com.gamemetricbackend.domain.follow.entity.Follow;
+import com.gamemetricbackend.domain.follow.repository.FollowRepository;
+import com.gamemetricbackend.domain.follow.service.FollowService;
+import com.gamemetricbackend.domain.follow.service.FollowServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +20,10 @@ import java.util.Optional;
 class DibServiceImplTest {
 
     @Mock
-    private DibRepository dibRepository;
+    private FollowRepository dibRepository;
 
     @InjectMocks
-    private DibServiceImpl dibService;
+    private FollowServiceImpl dibService;
 
     private final Long userId = 1L;
     private final String streamerName = "StreamerA";
@@ -35,7 +36,7 @@ class DibServiceImplTest {
     @Test
     void updateDib_ShouldUpdateExistingDib() {
         // Given: 기존 Dib 존재
-        Dib existingDib = new Dib(userId, streamerName);
+        Follow existingDib = new Follow(userId, streamerName);
         when(dibRepository.findByFollowerIdAndStreamerName(userId, streamerName))
                 .thenReturn(Optional.of(existingDib));
 
@@ -44,7 +45,7 @@ class DibServiceImplTest {
 
         // Then
         assertNotNull(status);
-        verify(dibRepository, never()).save(any(Dib.class)); // 기존 객체만 업데이트
+        verify(dibRepository, never()).save(any(Follow.class)); // 기존 객체만 업데이트
     }
 
     @Test
@@ -58,6 +59,6 @@ class DibServiceImplTest {
 
         // Then
         assertNotNull(status);
-        verify(dibRepository).save(any(Dib.class)); // 새로운 객체 저장
+        verify(dibRepository).save(any(Follow.class)); // 새로운 객체 저장
     }
 }

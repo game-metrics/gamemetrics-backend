@@ -1,8 +1,8 @@
-package com.gamemetricbackend.domain.dib.repository;
+package com.gamemetricbackend.domain.follow.repository;
 
 import java.util.Optional;
 
-import com.gamemetricbackend.domain.dib.entity.Follow;
+import com.gamemetricbackend.domain.follow.entity.Follow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,16 +1,16 @@
-package com.gamemetricbackend.domain.dib.service;
+package com.gamemetricbackend.domain.follow.service;
 
-import com.gamemetricbackend.domain.dib.entity.Follow;
+import com.gamemetricbackend.domain.follow.entity.Follow;
 import java.util.NoSuchElementException;
 
-import com.gamemetricbackend.domain.dib.repository.FollowRepository;
+import com.gamemetricbackend.domain.follow.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class DibServiceImpl implements DibService{
+public class FollowServiceImpl implements FollowService{
     private final FollowRepository dibRepository;
 
     // todo need a better way then using try catch...
