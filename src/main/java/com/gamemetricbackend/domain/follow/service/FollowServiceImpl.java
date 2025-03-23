@@ -1,10 +1,12 @@
 package com.gamemetricbackend.domain.follow.service;
 
+import com.gamemetricbackend.domain.follow.dto.FollowResponseDto;
 import com.gamemetricbackend.domain.follow.entity.Follow;
 import java.util.NoSuchElementException;
 
 import com.gamemetricbackend.domain.follow.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class FollowServiceImpl implements FollowService{
         return Boolean.TRUE;
     }
 
+    @Override
+    public Page<FollowResponseDto> getMyFollowPage(Long id) {
+        return null;
+    }
 
 
     private Follow createNewDib(Long userid, String streamerName){

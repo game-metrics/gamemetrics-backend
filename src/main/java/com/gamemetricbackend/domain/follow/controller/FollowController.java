@@ -1,8 +1,10 @@
 package com.gamemetricbackend.domain.follow.controller;
 
+import com.gamemetricbackend.domain.follow.dto.FollowResponseDto;
 import com.gamemetricbackend.domain.follow.service.FollowService;
 import com.gamemetricbackend.global.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,11 +21,15 @@ public class FollowController {
     private final FollowService followService;
 
     @GetMapping
-    public ResponseEntity<Boolean> updateFollow(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(name = "streamerName") String StreamerName){
+    public ResponseEntity<Boolean> UpdateFollow(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(name = "streamerName") String StreamerName){
         return ResponseEntity.status(HttpStatus.CREATED).body(followService.updateFollow(userDetails.getId(),StreamerName));
     }
 
-    // get my dibs
+    // get my follows
+    @GetMapping
+    public ResponseEntity<Page<FollowResponseDto>> GetMyFollowPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseEntity.status(HttpStatus.CREATED).body(followService.getMyFollowPage(userDetails.getId()));
+    }
 
     //
 
