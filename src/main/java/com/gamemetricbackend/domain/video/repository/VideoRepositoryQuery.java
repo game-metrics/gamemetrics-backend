@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 public interface VideoRepositoryQuery {
 
     Page<VideoResponseDto> getVideoPage(Pageable pageable);
+
+    Page<VideoResponseDto> getUserVideo(Long userId, Pageable pageable);
 }

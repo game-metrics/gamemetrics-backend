@@ -8,8 +8,6 @@ import com.gamemetricbackend.global.exception.UserNotMatchException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
-
 public interface VideoService {
 
     VideoResponseDto createVideo(Long userId, VideoCreationDto videoCreationDto);
@@ -21,4 +19,6 @@ public interface VideoService {
     Page<VideoResponseDto> getVideoPage(Pageable pageable);
 
     VideoResponseDto getVideo(Long videoId);
+
+    Page<VideoResponseDto> getUserVideo(Long id, Pageable pageable);
 }

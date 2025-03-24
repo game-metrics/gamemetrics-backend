@@ -59,4 +59,9 @@ public class VideoServiceImpl implements VideoService {
     public VideoResponseDto getVideo(Long videoId) {
         return null;
     }
+
+    @Override
+    public Page<VideoResponseDto> getUserVideo(Long userId, Pageable pageable) {
+        return videoRepository.getUserVideo(userId,pageable);
+    }
 }

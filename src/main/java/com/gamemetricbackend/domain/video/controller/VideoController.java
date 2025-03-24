@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 영상 관련 기능을 처리하는 컨트롤러 클래스입니다.
- * 영상 생성, 수정, 삭제 기능을 제공합니다.
+ * 영상 생성, 수정, 삭제, 조회 기능을 제공합니다.
  */
 @RestController
 @RequiredArgsConstructor
@@ -36,11 +36,11 @@ public class VideoController {
      */
     @PostMapping
     public ResponseEntity<ResponseDto<VideoResponseDto>> CreateVideo(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody VideoCreationDto videoCreationDto
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody VideoCreationDto videoCreationDto
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.createVideo(userDetails.getId(), videoCreationDto)));
+            .body(ResponseDto.success(videoService.createVideo(userDetails.getId(), videoCreationDto)));
     }
 
     /**
@@ -54,12 +54,12 @@ public class VideoController {
      */
     @PutMapping("/{videoId}")
     public ResponseEntity<ResponseDto<VideoResponseDto>> UpdateVideo(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody VideoUpdateDto videoUpdateDto,
-            @PathVariable(name = "videoId") Long videoId
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody VideoUpdateDto videoUpdateDto,
+        @PathVariable(name = "videoId") Long videoId
     ) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.updateVideo(userDetails.getId(), videoUpdateDto, videoId)));
+            .body(ResponseDto.success(videoService.updateVideo(userDetails.getId(), videoUpdateDto, videoId)));
     }
 
     /**
@@ -72,22 +72,49 @@ public class VideoController {
      */
     @DeleteMapping("/{videoId}")
     public ResponseEntity<ResponseDto<Boolean>> DeleteVideo(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PathVariable(name = "videoId") Long videoId
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable(name = "videoId") Long videoId
     ) throws UserNotMatchException {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.deleteVideo(userDetails.getId(), videoId)));
+            .body(ResponseDto.success(videoService.deleteVideo(userDetails.getId(), videoId)));
     }
 
+    /**
+     * 영상 목록을 페이지 형태로 조회하는 API입니다.
+     *
+     * @param pageable 페이지 정보(page, size 등)
+     * @return 영상 리스트(Page 객체)를 포함한 ResponseEntity
+     */
     @GetMapping
-    public ResponseEntity<ResponseDto<Page<VideoResponseDto>>> getBroadcastPage(@PageableDefault Pageable pageable) {
+    public ResponseEntity<ResponseDto<Page<VideoResponseDto>>> GetVideoPage(@PageableDefault Pageable pageable) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.getVideoPage(pageable)));
+            .body(ResponseDto.success(videoService.getVideoPage(pageable)));
     }
 
+    /**
+     * 단일 영상을 조회하는 API입니다.
+     *
+     * @param videoId 조회할 영상 ID
+     * @return 해당 영상 정보를 포함한 ResponseEntity
+     */
     @GetMapping("/{videoId}")
-    public ResponseEntity<ResponseDto<VideoResponseDto>> getBroadcast(@PathVariable Long videoId) {
+    public ResponseEntity<ResponseDto<VideoResponseDto>> GetBroadcast(@PathVariable Long videoId) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseDto.success(videoService.getVideo(videoId)));
+            .body(ResponseDto.success(videoService.getVideo(videoId)));
+    }
+
+    /**
+     * 개인이 올린 영상 목록을 페이지 형태로 조회하는 API입니다.
+     * @param pageable 페이지 정보(page, size 등)
+     * @param userDetails 로그인한 사용자 정보
+     * @return 영상 리스트(Page 객체)를 포함한 ResponseEntity
+     */
+    @GetMapping("/profile")
+    public ResponseEntity<ResponseDto<Page<VideoResponseDto>>> GetUserVideo(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PageableDefault Pageable pageable
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ResponseDto.success(videoService.getUserVideo(userDetails.getId(),pageable)));
     }
 }
