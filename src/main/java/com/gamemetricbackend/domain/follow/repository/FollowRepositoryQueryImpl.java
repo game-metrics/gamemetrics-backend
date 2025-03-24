@@ -25,7 +25,7 @@ public class FollowRepositoryQueryImpl implements FollowRepositoryQuery{
         BooleanExpression predicate = qFollow.followerId.eq(userId);
 
         QueryResults<FollowResponseDto> results = querydslConfig.jpaQueryFactory()
-            .select(Projections.fields(FollowResponseDto.class, qFollow.followerId, qFollow.streamerName))
+            .select(Projections.fields(FollowResponseDto.class, qFollow.streamerName))
             .from(qFollow)
             .where(predicate)
             .offset(pageable.getOffset())
