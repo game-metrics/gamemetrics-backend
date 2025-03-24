@@ -16,6 +16,7 @@ import java.util.List;
 public class VideoRepositoryQueryImpl implements VideoRepositoryQuery {
     private final QuerydslConfig querydslConfig;
     QVideo qVideo = QVideo.video;
+
     @Override
     public Page<VideoResponseDto> getVideoPage(Pageable pageable) {
 

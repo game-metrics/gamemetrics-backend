@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import com.gamemetricbackend.domain.follow.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,8 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @Override
-    public Page<FollowResponseDto> getMyFollowPage(Long id) {
-        return null;
+    public Page<FollowResponseDto> getMyFollowPage(Long userId, Pageable pageable) {
+        return followRepository.getFollowPage(userId,pageable);
     }
 
 
