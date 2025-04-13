@@ -1,10 +1,10 @@
 # Notion : [Gametric Notion](https://www.notion.so/Gametric-1c74f54d931480fbb042e9d97eb177ef)
 
 # ERD
-![ERD](./github/erd.png)
+![ERD](./.github/erd.png)
 
 # Architecture Diagram
-![Architecture](./github/arch.png)
+![Architecture](./.github/arch.png)
 
 # 📘 API Documentation
 
