@@ -1,5 +1,23 @@
 # Notion : [Gametric Notion](https://www.notion.so/Gametric-1c74f54d931480fbb042e9d97eb177ef)
+Gametric is an all-in-one web platform that empowers creators to stream live via RTMP, upload and share videos, and interact with audiences in real time.
+It combines live broadcasting, VOD features, a social follow system, and WebSocket-based chat into a single, streamlined experience.
 
+This documentation provides everything developers need to integrate with Gametric's services via RESTful APIs and WebSocket protocols.
+
+Key features include:
+🔐 User management
+
+📡 RTMP-based live broadcasting
+
+🎬 Video upload, editing, and search
+
+🤝 Follow system for social interaction
+
+☁️ Media upload to AWS S3 (images & videos)
+
+🗂️ Category management
+
+💬 Real-time chat via WebSocket
 # ERD
 ![ERD](./.github/erd.png)
 
